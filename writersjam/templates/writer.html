@@ -45,67 +45,71 @@
     }
 </style>
 
-<div id="prompt">
-    <h3>Weekly Prompt Theme</h3>
-    <h1>{{ prompt.theme }}</h1>
-    <p>Genre : {{ prompt.genre }}</p>
-</div>
-
-<div class="float-main">
-    <div id="submission">
-        <p> ini submisi</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal">Add Story submission</button>
+<div class="content">
+    
+    <div id="prompt">
+        <h3>Weekly Prompt Theme</h3>
+        <h1>{{ prompt.theme }}</h1>
+        <p>Genre : {{ prompt.genre }}</p>
     </div>
-    <div id="reference">
-        <h3>Book reference </h3>
-        <div class="card-container">
-            {% for book in books %}
-            <div class="card">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                        <img src="..." class="card-img" alt="Book Cover">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ book.title }}</h5>
-                            <p class="card-text">by {{ book.author }}</p>
+    
+    <div class="float-main">
+        <div id="submission">
+            <p> ini submisi</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal">Add Story submission</button>
+        </div>
+        <div id="reference">
+            <h3>Book reference </h3>
+            <div class="card-container">
+                {% for book in books %}
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="..." class="card-img" alt="Book Cover">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-text">by {{ book.author }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-        </div>    
+                {% endfor %}
+            </div>    
+        </div>
     </div>
-</div>
-
-<div>
-    <div class="modal" id="submissionModal" tabindex="-1" aria-labelledby="submissionLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="submissionLabel">Submit your story here!</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="text-align:left;">
-                    <form id="submissionForm" onsubmit="return false">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <label for="title" class="col-form-label">Title  :</label>
-                            <input type="text" class="form-control" id="title" name="title"></input>
-                        </div>
-                        <div class="mb-3">
-                            <label for="story" class="col-form-label">Story :</label>
-                            <textarea class="form-control" id="story" name="story"></textarea>
-                        </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit">Submit</button>
+    
+    <div>
+        <div class="modal" id="submissionModal" tabindex="-1" aria-labelledby="submissionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="submissionLabel">Submit your story here!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    </form>
+                    <div class="modal-body" style="text-align:left;">
+                        <form id="submissionForm" onsubmit="return false">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="title" class="col-form-label">Title  :</label>
+                                <input type="text" class="form-control" id="title" name="title"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="story" class="col-form-label">Story :</label>
+                                <textarea class="form-control" id="story" name="story"></textarea>
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit">Submit</button>
+                        </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <script>

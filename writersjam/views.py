@@ -31,7 +31,8 @@ THEME_NUM = [
     (5, "Abnormal dimension gate"),
 ]
 
-# @login_required(login_url='/ login/')
+# test decorator
+@login_required(login_url='/login/')
 def show_story(request):
     current_week = datetime.date.today().isocalendar()[1]
 
