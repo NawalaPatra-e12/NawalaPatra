@@ -6,13 +6,7 @@ from writersjam.models import Submission, Prompt
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 import datetime
-# from library.models import Book
-
-# to do :
-# 1. import book dr library.models
-# 2. samain genre dengan id
-
-# Create your views here.
+from library.models import Book
 
 # belom tau mau buat apa
 GENRES_NUM = [
@@ -52,12 +46,12 @@ def show_story(request):
     story_data = Submission.objects.filter(prompt=prompt)
 
     # jadi bakal ambil buku sesuai genre dari prompt
-    # book_rec = Book.objects.filter(catagories = prompt.genre)
+    book_rec = Book.objects.filter(category = prompt.genre)
 
     context = {
         'story' : story_data,
         'prompt' : prompt,
-        # 'books' : book_rec,
+        'books' : book_rec,
     }
     return render(request, "writer.html", context)
 

@@ -33,15 +33,38 @@
     }
     .card{
         background-color: beige;
-        max-width: 180px;
-        height: 100px;
+        max-width: 300px;
+        height: auto;
         box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         margin: 10px;
+        padding-left: 10px;
     }
     .btn{
         background-color: white;
         border-radius: 20px;
+    }
+    .image-container {
+        width: 100px;  /* Set your desired width */
+        height: 150px; /* Set your desired height */
+        overflow: hidden;
+        display: flex;
+        border-radius: 10px;
+    }
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .col-md-4{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #buttonAddStory{
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>
 
@@ -56,16 +79,20 @@
     <div class="float-main">
         <div id="submission">
             <p> ini submisi</p>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal">Add Story submission</button>
+            <div id="buttonAddStory">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add Story submission</button>
+            </div>
         </div>
         <div id="reference">
             <h3>Book reference </h3>
+            {% for book in books %}
             <div class="card-container">
-                {% for book in books %}
                 <div class="card">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <img src="..." class="card-img" alt="Book Cover">
+                            <div class="image-container">
+                                <img src="{{book.image_url}}"/>
+                            </div>
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
@@ -75,8 +102,8 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>    
+            {% endfor %}
         </div>
     </div>
     
@@ -100,8 +127,8 @@
                                 <textarea class="form-control" id="story" name="story"></textarea>
                             </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                            <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
                         </div>
                         </form>
                     </div>
