@@ -51,3 +51,5 @@ Sebuah section dimana User Login dapat melakukan submisi karya atau buku setiap 
 | LeaderBoard | Bisa melihat semua leaderboard dan berpartisipasi dalam poll/voting (menambah opsi / memberi suara). | Hanya bisa melihat leaderboard ranking atas saja dan tidak dapat berpartisipasi dalam poll/voting. |
 | Discussion Forum | Dapat membaca dan berpartisipasi dalam diskusi di comment section seperti memulai diskusi atau me-reply sebuah diskusi. | Hanya bisa membaca comment section, tetapi tidak bisa berpartisipasi dalam diskusi. |
 | Writer's Jam | Dapat mengunggah karya pada prompt yang diberikan di minggu tersebut dan dapat melihat karya-karya pada prompt sebelumnya. | Dapat melihat prompt minggu ini dan karya penulis, tetapi tidak bisa melihat prompt sebelumnya atau berpartisipasi dalam writer's jam. |
+
+## *tes dev merge*
