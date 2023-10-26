@@ -1,0 +1,82 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+    <!-- Add these to the head of your HTML document -->
+    <style>
+        #important {
+            background-image: linear-gradient(90deg, #2ec4b6ff 2%, #e71d36ff 2%, #e71d36ff 4%, #ff9f1cff 4%, #ff9f1cff 6%, #011627ff 6%);
+            background-size: 100% 100%;
+        }
+
+        .container-fluid {
+            padding-left: 7%;
+        }
+
+        #appname {
+            font-family: 'Kidstock';
+            font-weight: bold;
+            color: white;
+            font-size: 32px;
+        }
+
+        .nav-link {
+            color: white;
+        }
+
+        .navbar .nav-item.dropdown .nav-link {
+            color: white;
+        }
+
+        .navbar .nav-item.dropdown.active .nav-link {
+            font-weight: bold;
+        }
+
+        .navbar .nav-item.dropdown .nav-link:hover {
+            color: #2ec4b6ff;
+        }
+
+        .navbar .nav-item.dropdown .nav-link:active {
+            color: #2ec4b6ff;
+        }
+
+    </style>
+</head>
+
+<nav class="navbar navbar-expand-lg fixed-top shadow" id="important">
+    <div class="container-fluid">
+        <a class="navbar-brand" id="appname" href="/">
+            NawalaPatra
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="browse" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Browse
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="browse">
+                        <a class="dropdown-item" href="/library/">Library</a>
+                        <a class="dropdown-item" href="#">Leaderboard</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="community" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Community
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="community">
+                        <a class="dropdown-item" href="#">Forum</a>
+                        <a class="dropdown-item" href="#">Writer's Jam</a>
+                    </div>
+                </li>
+
+            </ul>
+          </div>
+    </div>
+</nav>
