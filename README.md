@@ -53,3 +53,4 @@ Sebuah section dimana User Login dapat melakukan submisi karya atau buku setiap 
 | Writer's Jam | Dapat mengunggah karya pada prompt yang diberikan di minggu tersebut dan dapat melihat karya-karya pada prompt sebelumnya. | Dapat melihat prompt minggu ini dan karya penulis, tetapi tidak bisa melihat prompt sebelumnya atau berpartisipasi dalam writer's jam. |
 
 ## *tes dev merge*
+## *tes merger mybooks*
