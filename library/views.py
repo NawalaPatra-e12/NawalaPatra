@@ -55,7 +55,7 @@ def bookmark_book(request):
         book_id = request.POST.get('book_id')
         book = Book.objects.get(pk=book_id)
         request.user.userprofile.bookmarked_books.add(book)
-    return redirect('library:library')  # Redirect back to the library page or another appropriate URL
+    return redirect('library:show_library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF
 def show_xml(request):
