@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from library.models import Book
 from django.db.models import Q
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
@@ -53,8 +53,11 @@ def filter_category(request, id):
 def bookmark_book(request):
     if request.method == 'POST':
         book_id = request.POST.get('book_id')
-        book = Book.objects.get(pk=book_id)
-        request.user.userprofile.bookmarked_books.add(book)
+        book = get_object_or_404(Book, pk=book_id)
+        user_profile = request.user.userprofile
+
+        if book not in user_profile.bookmarked_books.all():
+            user_profile.bookmarked_books.add(book)
     return redirect('library:show_library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF
