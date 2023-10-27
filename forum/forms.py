@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from main.models import Discussion
+from forum.models import Discussion
 
 class DiscussionForm(ModelForm):
     class Meta:
