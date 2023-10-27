@@ -18,7 +18,7 @@ def create_discussion(request):
 
     if form.is_valid() and request.method == "POST":
         form.save()
-        return HttpResponseRedirect(reverse('main:show_main'))
+        return HttpResponseRedirect(reverse('forum:show_discussion'))
 
     context = {'form': form}
     return render(request, "create_discussion.html", context)
