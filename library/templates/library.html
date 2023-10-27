@@ -44,6 +44,13 @@
                 <td>{{product.title}}</td>
                 <td>{{product.author}}</td>
                 <td>{{product.category}}</td>
+                <td>
+                    <form method="POST" action="{% url 'bookmark_book' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_id" value="{{product.id}}">
+                        <button type="submit">Bookmark</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
     </table>
