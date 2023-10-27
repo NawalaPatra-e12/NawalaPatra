@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <style>
@@ -33,12 +32,14 @@
     }
     .card{
         background-color: beige;
-        max-width: 300px;
+        width: auto;
         height: auto;
         box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         margin: 10px;
         padding-left: 10px;
+        padding-top: 10px;
+        padding-bottom: 10px;
     }
     .btn{
         background-color: white;
@@ -76,9 +77,11 @@
         <p>Genre : {{ prompt.genre }}</p>
     </div>
     
+    <!-- <div id="story-submission"></div> -->
+
     <div class="float-main">
         <div id="submission">
-            <p> ini submisi</p>
+            <div id="story-submission"></div>
             <div id="buttonAddStory">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add Story submission</button>
             </div>
@@ -136,10 +139,54 @@
             </div>
         </div>
     </div>
-
 </div>
 
 <script>
-    
+    async function getStory() {
+        return fetch("{% url 'writersjam:get_story_json' %}").then((res) => res.json())
+    }
+
+    async function refreshPage() {
+        document.getElementById("story-submission").innerHTML=""
+        let htmlstring = ``
+        const stories = await getStory()
+        stories.forEach((submit) => {
+            htmlstring += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="story-title">
+                            <h4 class="card-title">${submit.fields.title}</h4>
+                            <h5 class="card-text">by ${submit.fields.user.username}</h5>
+                        </div>
+                        <div>
+                            <p class="card-text">${submit.fields.story}</p>
+                        </div>
+                        <div class="story-create-date">
+                            <p class="card-text">${submit.fields.date}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>\n`
+        });
+
+        document.getElementById("story-submission").innerHTML = htmlstring
+    }
+
+    refreshPage()
+
+    function addStory() {
+        fetch("{% url 'writersjam:submit_story_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#submissionForm'))
+        }).then(refreshPage)
+
+        document.getElementById("submissionForm").reset()
+        return false
+    }
+
+    document.getElementById("submit_story").onclick = addStory
+
+
 </script>
 {% endblock content %}
