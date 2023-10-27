@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from library.models import Book
 from django.db.models import Q
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
-
+from main.models import User, UserProfile
 
 CATEGORIES_NUM = [
     (1, "Literature & Fiction"),
@@ -49,6 +49,13 @@ def filter_category(request, id):
     }
 
     return render(request, "library.html", context)
+
+def bookmark_book(request):
+    if request.method == 'POST':
+        book_id = request.POST.get('book_id')
+        book = Book.objects.get(pk=book_id)
+        request.user.userprofile.bookmarked_books.add(book)
+    return redirect('library:library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF
 def show_xml(request):
