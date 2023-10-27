@@ -7,7 +7,8 @@ app_name = 'library'
 
 urlpatterns = [
     path('', show_library, name='show_library'),
-    path('search/<str:search_string>/', search_products, name='search_products'),
+    # path('search/<str:search_string>/', search_products, name='search_products'),
+    path('search/', search_products, name='search_products'),
     path('filter/<int:id>/', filter_category, name='filter_category'),
     path('xml', show_xml, name='show_xml'),
     path('json', show_json, name='show_json'),
