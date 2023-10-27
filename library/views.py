@@ -5,6 +5,7 @@ from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
 from main.models import User, UserProfile
 
+
 CATEGORIES_NUM = [
     (1, "Literature & Fiction"),
     (2, "Mystery, Thriller & Suspense"),
