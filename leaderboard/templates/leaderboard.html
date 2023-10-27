@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+<!DOCTYPE html>
 <html>
-{% block meta %}
+{% block content %}
     <style>
         .image-container {
             width: 100px;  /* Set your desired width */
@@ -13,70 +14,67 @@
             height: auto;
             object-fit: cover;
         }
+        table{
+            justify-content: center;
+            text-align: center;
+        }
+        button{
+            border: transparent;
+            background-color : #2ec4b6ff;
+        }
+        button:hover{
+            background-color: #ff9f1cff;
+            border : transparent;
+        }
     </style>
-{% endblock meta %}
-
 
 
 <div class="content"> 
-    <table id="item_table"></table>
+        <a href="/leaderboard/filter/1">
+            <button>Literature & Fiction</button>
+        </a>
+        <a href="/leaderboard/filter/2">
+            <button>Mystery, Thriller & Suspense</button>
+        </a>
+        <a href="/leaderboard/filter/3">
+            <button>Religion & Spirituality</button>
+        </a>
+        <a href="/leaderboard/filter/4">
+            <button>Romance</button>
+        </a>
+        <a href="/leaderboard/filter/5">
+            <button>Science Fiction & Fantasy</button>
+        </a>
+    <table id="item_table">
+    <tr style="text-align: center;">
+        <th>No.</th>
+        <th>Cover</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Rate</th>
+    </tr>
+
+    {% for product in products %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                    <div class="image-container">
+                        <img src="{{product.image_url}}"/>
+                    </div>
+                </td>
+                <td>{{product.title}}</td>
+                <td>{{product.author}}</td>
+                <td>{{product.category}}</td>
+                <td>{{product.rate}}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+</table>
 </div>
+<h1>test</h1>
 </html>
 
-<script>
-    async function getItems() {
-        return fetch("{% url 'main:get_item_json' %}").then((res) => res.json())
-    }
 
-    async function refreshItems() {
-        document.getElementById("item_table").innerHTML = ""
-        const items = await getItems()
-        let htmlString = `
-        <tr style="text-align: center;">
-            <th>No.</th>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Rate</th>
-        </tr>
-        `
-        items.forEach((item) => {
-            htmlString += `
-            <tr>
-                <td>${item.fields.image_url}</td>
-                <td>Rp${item.fields.title}.00</td>
-                <td style="text-align: justify;">${item.fields.author}</td>
-                <td>${item.fields.category}</td>
-                <td>${item.fields.rate}
-                    <div class="btn-display">
-                        <a>
-                            <button type="submit" class="btn btn-outline-warning btn-sm edit-item-btn" onclick="addAmount(${item.pk})">+</button>
-                        </a>
-                    </div>
-                </item></td>
-            </tr>
-        `
-        })
-
-        document.getElementById("item_table").innerHTML = htmlString
-    }
-
-    refreshItems()
-
-    function addItem() {
-        fetch("{% url 'main:add_item_ajax' %}", {
-            method: "POST",
-            body: new FormData(document.querySelector('#form'))
-        }).then(refreshItems)
-
-        document.getElementById("form").reset()
-        return false
-    }
-
-    function addAmount(item_id) {
-        fetch(`add_amount_button/${item_id}/`, {
-            method: "POST",
-        }).then(refreshItems)
-        return false
-    }
+{% endblock content %}
