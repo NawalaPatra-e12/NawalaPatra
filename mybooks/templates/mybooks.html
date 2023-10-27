@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <!-- <style>
+        .image-container {
+            width: 100px;  /* Set your desired width */
+            height: 150px; /* Set your desired height */
+            overflow: hidden;
+        }
+
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+    </style> -->
+{% endblock meta %}
+
+{% block content %}
+
+<div class="content">
+    <!-- <a href="/library/filter/1/">
+        <button>Literature & Fiction</button>
+    </a>
+     -->
+    <table>
+        <tr>
+            <th>No.</th>
+            <th>Cover</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+        </tr>
+    
+        {% for product in bookmarked_books %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                    <div class="image-container">
+                        <img src="{{product.image_url}}"/>
+                    </div>
+                </td>
+                <td>{{product.title}}</td>
+                <td>{{product.author}}</td>
+                <td>{{product.category}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock content %}
