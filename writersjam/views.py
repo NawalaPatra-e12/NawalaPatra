@@ -79,19 +79,27 @@ def story_xml_id(request, id):
 
 def delete_story(request, id):
     Submission.objects.get(pk=id).delete()
-    return HttpResponseRedirect(reverse('writersjam:show_story')) # kurang tau bener ato gk
+    return HttpResponseRedirect(reverse('writersjam:show_story'))
+
+def get_story_json(request):
+    # current_week = datetime.date.today().isocalendar()[1]
+    # prompt = Prompt.objects.get(week=current_week)
+    # story = Submission.objects.filter(prompt=prompt)
+    story = Submission.objects.all()
+    return HttpResponse(serializers.serialize('json', story))
 
 @csrf_exempt
 def submit_story_ajax(request):
     if request.method == 'POST':
         title = request.POST.get("title")
         story = request.POST.get("story")
+        date = datetime.datetime.now()
         user = request.user
+        
+        current_week = datetime.date.today().isocalendar()[1]
+        prompt = Prompt.objects.get(week=current_week)
 
-        prompt_id = request.POST.get('prompt')
-        prompt = Prompt.objects.get(id=prompt_id)
-
-        new_story = Submission(title=title, story=story, prompt=prompt, user=user)
+        new_story = Submission(title=title, story=story, date=date, prompt=prompt, user=user)
         new_story.save()
 
         return HttpResponse(b"CREATED", status=201)
