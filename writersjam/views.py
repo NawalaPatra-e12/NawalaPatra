@@ -26,8 +26,6 @@ THEME_NUM = [
     (5, "Abnormal dimension gate"),
 ]
 
-# test decorator
-@login_required(login_url='/login/')
 def show_story(request):
     current_week = datetime.date.today().isocalendar()[1]
 
@@ -44,7 +42,8 @@ def show_story(request):
         # If not, create a new one
         prompt = Prompt.objects.create(theme=theme, week=current_week, genre=genre)
 
-    story_data = Submission.objects.filter(prompt=prompt)
+    story_data = Submission.objects.filter(prompt=prompt) 
+    # my_story = Submission.objects.filter(user=request.user)
 
     # jadi bakal ambil buku sesuai genre dari prompt
     book_rec = Book.objects.filter(category = prompt.genre)
@@ -53,6 +52,7 @@ def show_story(request):
         'story' : story_data,
         'prompt' : prompt,
         'books' : book_rec,
+        # 'my_story' : my_story,
     }
     return render(request, "writer.html", context)
 
@@ -89,6 +89,7 @@ def get_story_json(request):
     story = Submission.objects.all()
     return HttpResponse(serializers.serialize('json', story))
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def submit_story_ajax(request):
     if request.method == 'POST':
@@ -98,7 +99,7 @@ def submit_story_ajax(request):
 
         # buat username
         user = request.user
-        user_name = request.user.username
+        username = request.user.username
         
         current_week = datetime.date.today().isocalendar()[1]
         prompt = Prompt.objects.get(week=current_week)

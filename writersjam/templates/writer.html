@@ -2,13 +2,21 @@
 {% block content %}
 
 <style>
+    #app-title {
+        font-family: 'Kidstock';
+        font-weight: bold;
+        color: #011627ff;
+        font-size: 8vh;
+        margin-bottom: 4vh;
+    }
     .float-main{
         padding-top: 10px;
     }
     #prompt {
-        background-color: rgb(195, 211, 240);
-        padding: 10px;
-        border-radius: 5px;
+        background-color: #011627ff;
+        color: white;
+        padding: 40px;
+        border-radius: 20px;
         text-align: center;
     }
     #submission{
@@ -85,6 +93,7 @@
 </style>
 
 <div class="content">
+    <h1 id="app-title">Writer's Jam</h1>
     
     <div id="prompt">
         <h3>Weekly Prompt Theme</h3>
@@ -92,17 +101,21 @@
         <p>Genre : {{ prompt.genre }}</p>
     </div>
     
-    <!-- <div id="story-submission"></div> -->
-
     <div class="float-main">
         <div id="submission">
-            <div id="story-submission"></div>
+            <p style="text-align: center; padding-top: 10px;">Do you want to participate? click the button below to submit your story now!</p>
+            {% if user.is_authenticated %}
             <div id="buttonAddStory">
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add Story submission</button>
             </div>
+            {% else %}
+                <p style="text-align: center;">Don't see the button? Please <a href="/login">login</a> first to join the fun!</p>
+            {% endif %}
+            <div id="story-submission"></div>
         </div>
         <div id="reference">
-            <h3>Book reference </h3>
+            <h3 style="padding-top: 10px;">Book reference </h3>
+            <p style="padding: 10px; text-align: justify;">Here are some books you can use as a reference to add a lil spice to your imagination! Interested in some of it? might wanna bookmarked it in the <a href="/library/">Library</a> :></p>
             {% for book in books %}
             <div class="card-container">
                 <div class="card">
