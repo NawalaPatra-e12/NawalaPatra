@@ -2,22 +2,169 @@
 
 {% block content %}
 
-<div class=" content">
-    <table>
-        {% for discussion in data %}
-            <tr>
-                <td>{{discussion.description}}</td>
-            </tr>
-        {% endfor %}
-    </table>
+<style>
+    .float-main{
+        padding-top: 10px;
+    }
+    #prompt {
+        background-color: rgb(195, 211, 240);
+        padding: 10px;
+        text-align: center;
+    }
+    #submission{
+        width: 65%;
+        float: left;
+        padding: 5px;
+        background-color: antiquewhite;
+    }
+    #reference{
+        width: 30%;
+        float: right;
+        padding: 5px;
+        background-color: lightblue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #reference .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .card{
+        background-color: beige;
+        max-width: 300px;
+        height: auto;
+        box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        margin: 10px;
+        padding-left: 10px;
+    }
+    .btn{
+        background-color: white;
+        border-radius: 20px;
+    }
+    .image-container {
+        width: 100px;  /* Set your desired width */
+        height: 150px; /* Set your desired height */
+        overflow: hidden;
+        display: flex;
+        border-radius: 10px;
+    }
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .col-md-4{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #buttonAddStory{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
 
-    <br />
+<div class="content">
+    
+    <div id="prompt">
+        <h3>Forum Diskusi</h3>
+    </div>
+    
+    <div class="content">
+        <table>
+            {% for discussion in data %}
+                <tr>
+                    <td>{{discussion.title}}</td>
+                    <td>{{discussion.description}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
+           
+    </div>
+    
+    <div>
+        <div class="modal" id="submissionModal" tabindex="-1" aria-labelledby="submissionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="submissionLabel">Add new discussion here!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align:left;">
+                        <form id="submissionForm" onsubmit="return false">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="title" class="col-form-label">Title  :</label>
+                                <input type="text" class="form-control" id="title" name="title"></input>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="col-form-label">Description :</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                            <button id="submit_discussion" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <a href="{% url 'forum:create_discussion' %}">
-        <button>
-            Add New Discussion
-        </button>
-    </a>
 </div>
 
+<script>
+    async function getDiscussion() {
+        return fetch("{% url 'forum:get_discussion_json' %}").then((res) => res.json())
+    }
+
+    async function refreshPage() {
+        document.getElementById("discussion-submission").innerHTML=""
+        let htmlstring = ``
+        const stories = await getDiscussion()
+        stories.forEach((submit) => {
+            htmlstring += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="discussion-title">
+                            <h4 class="card-title">${submit.fields.title}</h4>
+                            <h5 class="card-text">by ${submit.fields.user.username}</h5>
+                        </div>
+                        <div>
+                            <p class="card-text">${submit.fields.description}</p>
+                        </div>
+                        <div class="discussion-create-date">
+                            <p class="card-text">${submit.fields.date}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>\n`
+        });
+
+        document.getElementById("discussion-submission").innerHTML = htmlstring
+    }
+
+    refreshPage()
+
+    function addDiscussion() {
+        fetch("{% url 'forum:submit_discussion_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#submissionForm'))
+        }).then(refreshPage)
+
+        document.getElementById("submissionForm").reset()
+        return false
+    }
+
+    document.getElementById("submit_discussion").onclick = addDiscussion
+
+</script>
 {% endblock content %}
