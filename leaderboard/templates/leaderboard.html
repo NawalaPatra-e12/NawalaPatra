@@ -20,7 +20,9 @@
         }
         button{
             border: transparent;
-            background-color : #2ec4b6ff;
+            background-color : #e71d36ff;
+            size:3cm;
+            color :aliceblue
         }
         button:hover{
             background-color: #ff9f1cff;
@@ -30,21 +32,22 @@
 
 
 <div class="content"> 
-        <a href="/leaderboard/filter/1">
-            <button>Literature & Fiction</button>
+    <h1 id="app-title">Library</h1>
+
+    <div id="filters">
+
+        <p style="font-weight: bold;">Filters</p>
+
+        <a class="filter-links" href="/library/">
+            All
         </a>
-        <a href="/leaderboard/filter/2">
-            <button>Mystery, Thriller & Suspense</button>
+    
+        {% for category in categories %}
+        <a class="filter-links" href="/leaderboard/filter/{{ category.0 }}/">
+            {{ category.1 }}
         </a>
-        <a href="/leaderboard/filter/3">
-            <button>Religion & Spirituality</button>
-        </a>
-        <a href="/leaderboard/filter/4">
-            <button>Romance</button>
-        </a>
-        <a href="/leaderboard/filter/5">
-            <button>Science Fiction & Fantasy</button>
-        </a>
+        {% endfor %}
+    </div>
     <table id="item_table">
     <tr style="text-align: center;">
         <th>No.</th>
@@ -67,11 +70,15 @@
                 <td>{{product.author}}</td>
                 <td>{{product.category}}</td>
                 <td>{{product.rate}}
+                    <form method="POST" action="{% url 'leaderboard:rate_button' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_id" value="{{product.id}}">
+                        <button type="submit">♡</button>
+                    </form>
                 </td>
             </tr>
         {% endfor %}
     </table>
-</table>
 </div>
 <h1>test</h1>
 </html>
