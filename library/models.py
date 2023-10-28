@@ -8,6 +8,7 @@ class Book(models.Model):
     author = models.CharField(max_length=255, null=True, blank=True)
     category = models.CharField(max_length=255, null=True, blank=True)
     rate = models.IntegerField(default=0)
+    
     CATEGORIES = [
         ("Literature & Fiction", "Literature & Fiction"),
         ("Mystery, Thriller & Suspense", "Mystery, Thriller & Suspense"),
