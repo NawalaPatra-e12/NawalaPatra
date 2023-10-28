@@ -8,19 +8,22 @@
     #prompt {
         background-color: rgb(195, 211, 240);
         padding: 10px;
+        border-radius: 5px;
         text-align: center;
     }
     #submission{
-        width: 65%;
+        width: 69%;
         float: left;
         padding: 5px;
-        background-color: antiquewhite;
+        border-radius: 5px;
+        background-color: #ff9f1cff;
     }
     #reference{
         width: 30%;
         float: right;
         padding: 5px;
-        background-color: lightblue;
+        border-radius: 5px;
+        background-color: #2ec4b6ff;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -67,6 +70,18 @@
         justify-content: center;
         align-items: center;
     }
+    #story-title{
+        text-align: center;
+    }
+    #story-body{
+        padding-top: 10px;
+    }
+    #story-create-date{
+        font-size: 2px;
+    }
+    hr {
+        border: 1px solid black;
+    }
 </style>
 
 <div class="content">
@@ -99,7 +114,7 @@
                         </div>
                         <div class="col-md-8">
                             <div class="card-body">
-                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-title" style="font-weight: bold;">{{ book.title }}</p>
                                 <p class="card-text">by {{ book.author }}</p>
                             </div>
                         </div>
@@ -155,19 +170,22 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <div id="story-title">
+                        <div id="story-title" style="padding-top: 0px;">
                             <h4 class="card-title">${submit.fields.title}</h4>
-                            <h5 class="card-text">by ${submit.fields.user.username}</h5>
+                            <hr>
+                            <p class="card-text" style="font-weight: bold; padding-top: 0px;">by ${submit.fields.username}</p>
                         </div>
-                        <div>
+                        <div id="story-body">
                             <p class="card-text">${submit.fields.story}</p>
                         </div>
                         <div class="story-create-date">
+                            <br>
                             <p class="card-text">${submit.fields.date}</p>
                         </div>
                     </div>
                 </div>
-            </div>\n`
+            </div>
+        </div>\n`
         });
 
         document.getElementById("story-submission").innerHTML = htmlstring

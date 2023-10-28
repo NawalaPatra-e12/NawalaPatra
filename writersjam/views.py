@@ -7,6 +7,7 @@ from django.core import serializers
 from django.contrib.auth.decorators import login_required
 import datetime
 from library.models import Book
+from main.models import User
 
 # belom tau mau buat apa
 GENRES_NUM = [
@@ -94,12 +95,15 @@ def submit_story_ajax(request):
         title = request.POST.get("title")
         story = request.POST.get("story")
         date = datetime.datetime.now()
+
+        # buat username
         user = request.user
+        user_name = request.user.username
         
         current_week = datetime.date.today().isocalendar()[1]
         prompt = Prompt.objects.get(week=current_week)
 
-        new_story = Submission(title=title, story=story, date=date, prompt=prompt, user=user)
+        new_story = Submission(title=title, story=story, date=date, prompt=prompt, user=user, username=username)
         new_story.save()
 
         return HttpResponse(b"CREATED", status=201)
