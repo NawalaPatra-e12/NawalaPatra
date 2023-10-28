@@ -1,15 +1,23 @@
 {% extends 'base.html' %}
 
+{% block meta %}
+    <style>
+        #app-title {
+            font-family: 'Kidstock';
+            font-weight: bolder;
+            color: #011627ff;
+            font-size: 8vh;
+            margin: 4vh;
+        }
+    </style>
+{% endblock meta %}
+
 {% block content %}
 
 <div class="content">
-    <h1>Welcome to NawalaPatra!</h1>
-
-    <p>This is a landing page.</p>
-    
-    <a href="/library/" class="nav-link planner" id="planner">
-        <button class="button button1">Library</button>
-    </a>
+    <center>
+        <h1 id="app-title">Hello!</h1>
+    </center>
 </div>
 
 {% endblock content %}

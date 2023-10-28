@@ -48,6 +48,43 @@
             background-color: #011627ff !important;
         }
 
+        .btn-primary {
+            background-color: #2ec4b6ff !important;
+            border-color: #2ec4b6ff !important;
+        }
+
+        .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+            background-color: #249b90 !important;
+            border-color: #249b90 !important;
+        }
+
+        .btn-secondary {
+            background-color: #ff9f1cff !important;
+            border-color: #ff9f1cff !important;
+            color: #011627ff !important;
+        }
+
+        .btn-secondary:hover, .btn-secondary:active, .btn-secondary:visited {
+            background-color: #e88600 !important;
+            border-color: #e88600 !important;
+            color: #011627ff !important;
+        }
+
+        .u-name {
+            color: #e88600;
+        }
+
+        .filter-links {
+            color: #e71d36ff;
+        }
+
+        .filter-links:hover {
+            color: #bd1429;
+            text-decoration: none;
+            font-size: large;
+            font-weight: bold;
+        }
+
     </style>
 {% endblock meta %}
 
@@ -77,26 +114,32 @@
                 </a>
                 <br/>
                 <br/>
-
                 {% endfor %}
             </div>
         </div>
         
         <div class="grid-child">
 
-            <table>
-                <tr>
-                    <th>No.</th>
-                    <th>Cover</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Category</th>
-                    <th>Bookmark</th>
-                </tr>
-            
-                {% for product in products %}
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>{{forloop.counter}}</td>
+                        <th scope="col">#</th>
+                        <th scope="col">Cover</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Category</th>
+                        {% if user.is_authenticated %}
+                        <th scope="col">Bookmark</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                
+                
+                <tbody>
+
+                    {% for product in products %}
+                    <tr>
+                        <th scope="row">{{forloop.counter}}</th>
                         <td>
                             <div class="image-container">
                                 <img src="{{product.image_url}}"/>
@@ -105,21 +148,21 @@
                         <td>{{product.title}}</td>
                         <td>{{product.author}}</td>
                         <td>{{product.category}}</td>
+                        {% if user.is_authenticated %}
                         <td>
                             <form method="POST" action="{% url 'library:bookmark_book' %}">
                                 {% csrf_token %}
                                 <input type="hidden" name="book_id" value="{{product.id}}">
-                                <button type="submit">Bookmark</button>
+                                <button type="submit" class="btn btn-primary">Bookmark</button>
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
-                {% endfor %}
+                    {% endfor %}
+
+                </tbody>
+                
             </table>
-
-            <!-- <div id="book-list"></div>
-
-            <button type="button" class="btn btn-outline-dark btn-small" id="prev">Prev</button>
-            <button type="button" class="btn btn-outline-dark btn-small" id="next">Next</button> -->
         </div>
         
         <div class="grid-child">
@@ -128,12 +171,19 @@
                 <p>
                     We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!
                 </p>
-                <button type="button" class="btn btn-outline-dark btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
-        
+
+                {% if user.is_authenticated %}
+                <button type="button" class="btn btn-secondary btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
+                {% else %}
+                <a href="/login/">
+                    Login now to submit a request.
+                </a>
+                {% endif %}
                 <div id="bookRecs">
                     <p style="font-weight: bold;">Recent Requests:</p>
                     <div id="all_requests" class="inventory row row-cols-1 g-4"></div>
                 </div>
+
             </div>
         </div>
     </div>
@@ -142,7 +192,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Post New Request</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Submit New Request</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -164,7 +214,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Post Request</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Submit Request</button>
                 </div>
             </div>
         </div>
@@ -173,13 +223,6 @@
 </div>
 
 <script>
-
-    var pageNum = 1;
-    var showType = 0;
-
-    async function getBooks() {
-        return fetch("{% url 'library:show_json' %}").then((res) => res.json())
-    }
 
     async function getRequests() {
         return fetch("{% url 'library:get_request_json' %}").then((res) => res.json())
@@ -206,7 +249,7 @@
                         <h6 class="card-subtitle mb-2 text-muted">Book by ${item.fields.book_author}</h6>
                         <p class="card-text">${item.fields.reason}</p>
 
-                        <p class="card-text">@${user.username}</p>
+                        <p class="card-text u-name">@${user.username}</p>
                         <p class="card-text date-post" style="font-size: 1vh;">
                         Request posted on ${item.fields.date_added}
                         </p>
@@ -220,66 +263,6 @@
     }
 
     refreshRequests()
-
-    async function browseBooks(type) {
-        document.getElementById("book-list").innerHTML = ""
-        let books = await getBooks()
-        let maxPageNum = Math.ceil(books.length / 10);
-        pageNum = pageNum < maxPageNum ? pageNum : maxPageNum;
-        pageNum = pageNum > 0 ? pageNum : 1;
-
-        if (type == 0) {
-        }
-
-        let bookTable = `
-        <table>
-            <tr>
-                <th>Cover</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Bookmark</th>
-            </tr>\n`;
-
-        for(var i = (pageNum-1)*10; i < (pageNum*10); i++) {
-            let product = books[i];
-            console.log(product);
-            bookTable += `\n
-            <tr>
-                <td>
-                    <div class="image-container">
-                        <img src="${product.fields.image_url}"/>
-                    </div>
-                </td>
-                <td>${product.fields.title}</td>
-                <td>${product.fields.author}</td>
-                <td>${product.fields.category}</td>
-                <td>
-                    <form method="POST" action="{% url 'library:bookmark_book' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="book_id" value="${product.pk}">
-                        <button type="submit">Bookmark</button>
-                    </form>
-                </td>
-            </tr>\n`;
-        }
-        bookTable += `</table>`;
-
-        document.getElementById("book-list").innerHTML = bookTable;
-    }
-
-    browseBooks(showType)
-
-    function changePage() {
-        console.log(pageNum);
-        pageNum += 1;
-        browseBooks(showType);
-    }
-
-    document.getElementById("next").onclick = changePage
-
-
-
 
     function addRequest() {
         fetch("{% url 'library:add_request_ajax' %}", {

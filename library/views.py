@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from library.models import Book, Request
 from django.db.models import Q
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
 from main.models import User, UserProfile
 from django.contrib.auth.decorators import login_required
@@ -24,8 +24,6 @@ def show_library(request):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
-        'last_login': request.COOKIES['last_login'],
-
     }
 
     return render(request, "library.html", context)
