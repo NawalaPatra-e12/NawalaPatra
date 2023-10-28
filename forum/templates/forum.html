@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<table>
-    {% for discussion in data %}
-        <tr>
-            <td>{{discussion.description}}</td>
-        </tr>
-    {% endfor %}
-</table>
 
-<br />
+<div class=" content">
+    <table>
+        {% for discussion in data %}
+            <tr>
+                <td>{{discussion.description}}</td>
+            </tr>
+        {% endfor %}
+    </table>
 
-<a href="{% url 'forum:create_discussion' %}">
-    <button>
-        Add New Discussion
-    </button>
-</a>
+    <br />
+
+    <a href="{% url 'forum:create_discussion' %}">
+        <button>
+            Add New Discussion
+        </button>
+    </a>
+</div>
 
 {% endblock content %}

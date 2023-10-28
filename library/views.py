@@ -1,9 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from library.models import Book
 from django.db.models import Q
 from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
 from django.core import serializers
 from main.models import User, UserProfile
+from django.contrib.auth.decorators import login_required
+
 
 CATEGORIES_NUM = [
     (1, "Literature & Fiction"),
@@ -20,24 +22,34 @@ def show_library(request):
     
     context = {
         'products': data,
+        'categories': CATEGORIES_NUM,
     }
+
     return render(request, "library.html", context)
 
 # Function to search & filter books according to search term.
-def search_products(request, search_string):
-    words = search_string.split()
+def search_products(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        words = searched.split()
 
-    search_filter = Q()
-    for word in words:
-        search_filter &= Q(title__icontains=word) | Q(author__icontains=word) | Q(category__icontains=word)
+        search_filter = Q()
 
-    data = Book.objects.filter(search_filter)
+        for word in words:
+            search_filter &= Q(title__icontains=word) | Q(author__icontains=word) | Q(category__icontains=word)
 
-    context = {
-        'products': data,
-    }
+        data = Book.objects.filter(search_filter)
 
-    return render(request, "library.html", context)
+        context={
+            'searched': searched,
+            'products': data,
+            'categories': CATEGORIES_NUM,
+        }
+
+        return render(request, "library.html", context)
+    
+    else:
+        return render(request, "library.html", {})
 
 # Function to filter books according to category id.
 def filter_category(request, id):
@@ -46,15 +58,20 @@ def filter_category(request, id):
 
     context = {
         'products': data,
+        'categories': CATEGORIES_NUM,
     }
 
     return render(request, "library.html", context)
 
+@login_required(login_url='/login/')
 def bookmark_book(request):
     if request.method == 'POST':
         book_id = request.POST.get('book_id')
-        book = Book.objects.get(pk=book_id)
-        request.user.userprofile.bookmarked_books.add(book)
+        book = get_object_or_404(Book, pk=book_id)
+        user_profile = request.user.userprofile
+
+        if book not in user_profile.bookmarked_books.all():
+            user_profile.bookmarked_books.add(book)
     return redirect('library:show_library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF
