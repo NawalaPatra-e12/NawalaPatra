@@ -5,11 +5,6 @@
             background-color: #011627ff;
             width: 100%;
         }
-        
-        .whole-footer.sticky {
-            position: fixed;
-            bottom: 0;
-        }
 
     </style>
 </head>
@@ -55,21 +50,3 @@
       <a class="text-white" href="#!">NawalaPatra</a>
     </div>
   </footer>
-
-  <script>
-    window.addEventListener('load', function () {
-        const content = document.querySelector('.content');
-        const footer = document.querySelector('.whole-footer');
-
-        function checkFooterPosition() {
-            if (content.clientHeight < window.innerHeight) {
-                footer.classList.add('sticky');
-            } else {
-                footer.classList.remove('sticky');
-            }
-        }
-
-        checkFooterPosition();
-        window.addEventListener('resize', checkFooterPosition);
-    });
-</script>

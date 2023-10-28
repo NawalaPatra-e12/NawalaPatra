@@ -1,10 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect, render
-from library.models import Book
+from library.models import Book, Request
 from django.db.models import Q
-from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.core import serializers
 from main.models import User, UserProfile
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 CATEGORIES_NUM = [
@@ -23,6 +24,8 @@ def show_library(request):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
+        'last_login': request.COOKIES['last_login'],
+
     }
 
     return render(request, "library.html", context)
@@ -90,3 +93,23 @@ def show_xml_by_id(request, id):
 def show_json_by_id(request, id):
     data = Book.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def get_request_json(request):
+    product_item = Request.objects.select_related("user")
+    return HttpResponse(serializers.serialize('json', product_item))
+
+@csrf_exempt
+def add_request_ajax(request):
+    if request.method == 'POST':
+
+        user = request.user
+        book_title = request.POST.get("book_title")
+        book_author = request.POST.get("book_author")
+        reason = request.POST.get("reason")
+
+        new_product = Request(book_title=book_title, book_author=book_author, reason=reason, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()

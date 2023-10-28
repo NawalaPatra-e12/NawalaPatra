@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages 
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 import datetime
 from django.db.models.signals import post_save
@@ -58,3 +58,13 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+
+def get_username(request, user_id):
+    try:
+        user = User.objects.get(id=user_id)
+        user_data = {
+            'username': user.username,
+        }
+        return JsonResponse(user_data)
+    except User.DoesNotExist:
+        return JsonResponse({'error': 'User not found'}, status=404)
