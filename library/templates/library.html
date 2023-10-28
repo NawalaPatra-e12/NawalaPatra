@@ -26,8 +26,26 @@
             margin-bottom: 4vh;
         }
 
-        #filters {
+        .filter-links {
             margin-bottom: 4vh;
+        }
+
+        #bookRecs {
+            margin-top: 3vh;
+        }
+
+        .date-post {
+            text-align: right;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 0.5fr 4fr 1fr;
+            grid-gap: 24px;
+        }
+
+        .btn-outline-dark:hover {
+            background-color: #011627ff !important;
         }
 
     </style>
@@ -40,52 +58,241 @@
 
     <h1 id="app-title">Library</h1>
 
-    <div id="filters">
+    <div class="grid-container">
 
-        <p style="font-weight: bold;">Filters</p>
+        <div class="grid-child">
+            <div class="filters">
+                <p style="font-weight: bold;">Browse by Genre</p>
+        
+                <a class="filter-links" href="/library/">
+                    All
+                </a>
+                <br/>
+                <br/>
 
-        <a class="filter-links" href="/library/">
-            All
-        </a>
-    
-        {% for category in categories %}
-        <a class="filter-links" href="/library/filter/{{ category.0 }}/">
-            {{ category.1 }}
-        </a>
-        {% endfor %}
+            
+                {% for category in categories %}
+                <a class="filter-links" href="/library/filter/{{ category.0 }}/">
+                    {{ category.1 }}
+                </a>
+                <br/>
+                <br/>
+
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="grid-child">
+
+            <table>
+                <tr>
+                    <th>No.</th>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Bookmark</th>
+                </tr>
+            
+                {% for product in products %}
+                    <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>
+                            <div class="image-container">
+                                <img src="{{product.image_url}}"/>
+                            </div>
+                        </td>
+                        <td>{{product.title}}</td>
+                        <td>{{product.author}}</td>
+                        <td>{{product.category}}</td>
+                        <td>
+                            <form method="POST" action="{% url 'library:bookmark_book' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="book_id" value="{{product.id}}">
+                                <button type="submit">Bookmark</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <!-- <div id="book-list"></div>
+
+            <button type="button" class="btn btn-outline-dark btn-small" id="prev">Prev</button>
+            <button type="button" class="btn btn-outline-dark btn-small" id="next">Next</button> -->
+        </div>
+        
+        <div class="grid-child">
+            <div class="request-section">
+                <p style="font-weight: bold;">Got a Book Request?</p>
+                <p>
+                    We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!
+                </p>
+                <button type="button" class="btn btn-outline-dark btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
+        
+                <div id="bookRecs">
+                    <p style="font-weight: bold;">Recent Requests:</p>
+                    <div id="all_requests" class="inventory row row-cols-1 g-4"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <table>
-        <tr>
-            <th>No.</th>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Bookmark</th>
-        </tr>
-    
-        {% for product in products %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Post New Request</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="requestForm" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="book_title" class="col-form-label">Book Title:</label>
+                            <input type="text" class="form-control" id="book_title" name="book_title"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="book_author" class="col-form-label">Book Author:</label>
+                            <input type="text" class="form-control" id="book_author" name="book_author"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reason" class="col-form-label">Reason for Request:</label>
+                            <textarea class="form-control" id="reason" name="reason"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Post Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    var pageNum = 1;
+    var showType = 0;
+
+    async function getBooks() {
+        return fetch("{% url 'library:show_json' %}").then((res) => res.json())
+    }
+
+    async function getRequests() {
+        return fetch("{% url 'library:get_request_json' %}").then((res) => res.json())
+    }
+
+    async function getUsername(user_id) {
+        const response = await fetch(`/get_username/${user_id}`);
+        return response.json();
+    }
+
+    async function refreshRequests() {
+        document.getElementById("all_requests").innerHTML = ""
+        const products = await getRequests()
+        let htmlString = ``
+        
+        for (const item of products) {
+            const user_id = item.fields.user;
+            const user = await getUsername(user_id);
+            htmlString += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.fields.book_title}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Book by ${item.fields.book_author}</h6>
+                        <p class="card-text">${item.fields.reason}</p>
+
+                        <p class="card-text">@${user.username}</p>
+                        <p class="card-text date-post" style="font-size: 1vh;">
+                        Request posted on ${item.fields.date_added}
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>\n`;
+        }
+        
+        document.getElementById("all_requests").innerHTML = htmlString
+    }
+
+    refreshRequests()
+
+    async function browseBooks(type) {
+        document.getElementById("book-list").innerHTML = ""
+        let books = await getBooks()
+        let maxPageNum = Math.ceil(books.length / 10);
+        pageNum = pageNum < maxPageNum ? pageNum : maxPageNum;
+        pageNum = pageNum > 0 ? pageNum : 1;
+
+        if (type == 0) {
+        }
+
+        let bookTable = `
+        <table>
             <tr>
-                <td>{{forloop.counter}}</td>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Bookmark</th>
+            </tr>\n`;
+
+        for(var i = (pageNum-1)*10; i < (pageNum*10); i++) {
+            let product = books[i];
+            console.log(product);
+            bookTable += `\n
+            <tr>
                 <td>
                     <div class="image-container">
-                        <img src="{{product.image_url}}"/>
+                        <img src="${product.fields.image_url}"/>
                     </div>
                 </td>
-                <td>{{product.title}}</td>
-                <td>{{product.author}}</td>
-                <td>{{product.category}}</td>
+                <td>${product.fields.title}</td>
+                <td>${product.fields.author}</td>
+                <td>${product.fields.category}</td>
                 <td>
                     <form method="POST" action="{% url 'library:bookmark_book' %}">
                         {% csrf_token %}
-                        <input type="hidden" name="book_id" value="{{product.id}}">
+                        <input type="hidden" name="book_id" value="${product.pk}">
                         <button type="submit">Bookmark</button>
                     </form>
                 </td>
-            </tr>
-        {% endfor %}
-    </table>
-</div>
+            </tr>\n`;
+        }
+        bookTable += `</table>`;
+
+        document.getElementById("book-list").innerHTML = bookTable;
+    }
+
+    browseBooks(showType)
+
+    function changePage() {
+        console.log(pageNum);
+        pageNum += 1;
+        browseBooks(showType);
+    }
+
+    document.getElementById("next").onclick = changePage
+
+
+
+
+    function addRequest() {
+        fetch("{% url 'library:add_request_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#requestForm'))
+        }).then(refreshRequests)
+
+        document.getElementById("requestForm").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addRequest
+
+</script>
 
 {% endblock content %}
