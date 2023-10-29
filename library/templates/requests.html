@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="content">
+    <p style="font-weight: bold;">Got a Book Request?</p>
+    <p>
+        We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!
+    </p>
+
+    {% if user.is_authenticated %}
+    <button type="button" class="btn btn-secondary btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
+    {% else %}
+    <a href="/login/">
+        Login now to submit a request.
+    </a>
+    {% endif %}
+    <div id="bookRecs">
+        <p style="font-weight: bold;">All Requests:</p>
+        <div id="all_requests" class="inventory row row-cols-1 row-cols-md-3 g-4"></div>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Submit New Request</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="requestForm" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="book_title" class="col-form-label">Book Title:</label>
+                            <input type="text" class="form-control" id="book_title" name="book_title"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="book_author" class="col-form-label">Book Author:</label>
+                            <input type="text" class="form-control" id="book_author" name="book_author"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reason" class="col-form-label">Reason for Request:</label>
+                            <textarea class="form-control" id="reason" name="reason"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Submit Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+    async function getRequests() {
+        return fetch("{% url 'library:get_request_json' %}").then((res) => res.json())
+    }
+
+    async function getUsername(user_id) {
+        const response = await fetch(`/get_username/${user_id}`);
+        return response.json();
+    }
+
+    async function refreshRequests() {
+        document.getElementById("all_requests").innerHTML = ""
+        const products = await getRequests()
+
+        let htmlString = ``
+        
+        for (const item of products.reverse()) {
+            const user_id = item.fields.user;
+            const user = await getUsername(user_id);
+            htmlString += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">${item.fields.book_title}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Book by ${item.fields.book_author}</h6>
+                        <p class="card-text">${item.fields.reason}</p>
+
+                        <p class="card-text u-name">@${user.username}</p>
+                        <p class="card-text date-post" style="font-size: 1vh;">
+                        Request posted on ${item.fields.date_added}
+                        </p>
+                        
+                    </div>
+                </div>
+            </div>\n`;
+        }
+        
+        document.getElementById("all_requests").innerHTML = htmlString
+    }
+
+    refreshRequests()
+
+    function addRequest() {
+        fetch("{% url 'library:add_request_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#requestForm'))
+        }).then(refreshRequests)
+
+        document.getElementById("requestForm").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addRequest
+
+</script>
+
+{% endblock content %}

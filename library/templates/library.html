@@ -182,6 +182,10 @@
                 <div id="bookRecs">
                     <p style="font-weight: bold;">Recent Requests:</p>
                     <div id="all_requests" class="inventory row row-cols-1 g-4"></div>
+                    <br/>
+                    <a class="filter-links" href="/library/requests/">
+                        View All
+                    </a>
                 </div>
 
             </div>
@@ -236,9 +240,11 @@
     async function refreshRequests() {
         document.getElementById("all_requests").innerHTML = ""
         const products = await getRequests()
+        let counter = 0;
+
         let htmlString = ``
         
-        for (const item of products) {
+        for (const item of products.reverse()) {
             const user_id = item.fields.user;
             const user = await getUsername(user_id);
             htmlString += `\n
@@ -257,6 +263,9 @@
                     </div>
                 </div>
             </div>\n`;
+
+            counter++;
+            if (counter >= 4) break;
         }
         
         document.getElementById("all_requests").innerHTML = htmlString
