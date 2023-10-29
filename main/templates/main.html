@@ -1,1 +1,97 @@
-<h1>Welcome to NawalaPatra!</h1>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block meta %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+{% endblock meta %}
+
+{% block content %}
+
+<div class="content">
+    <center>
+        <h1 id="app-title">Welcome to NawalaPatra!</h1>
+        <p style="font-weight: bold;">Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
+    </center>
+
+    <div id="card_container">
+        <div class="card_box">
+            <div class="card_item">
+                <a href="/library/" class="item_link">
+                <div class="item_bg"></div>
+                <div class="item_title">
+                    Library
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Discover variety of books around the world along with us</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/leaderboard/" class="item_link">
+                <div class="item_bg leaderboard"></div>
+                <div class="item_title">
+                    Leaderboard
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Don't know what book to read? Find out the most loved book in here</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/forum/" class="item_link">
+                <div class="item_bg forum"></div>
+                <div class="item_title">
+                    Forum
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Wanna have a fun conversation among your kind? Come and join our community discussion</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/writersjam/" class="item_link">
+                <div class="item_bg writersjam"></div>
+                <div class="item_title">
+                    Writer's Jam
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Don't know where to put your imagination to? Don't worry, we have a special place to submit your own story</p>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div> 
+
+    {% if user.is_authenticated %}
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div id="mybooks-section" style="height: 430px; background-color: #121212; border-radius: 30px; width: 90%; " >
+            <div class="mybooks_item" style="border: 3px black;">
+                <a href="/mybooks/" class="book_link">
+                    <div class="item_title">
+                        {{ user.username }} Books Collection
+                        <br>
+                        <hr style="border-color: white;">
+                        <p class="item_text">See the books that you have bookmarked before in here!</p>
+
+                        <div id="bookmark_list">
+                            {% for book in bookmarked %}
+                            <div class="image-container">
+                                <img src="{{book.image_url}}"/>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock content %}

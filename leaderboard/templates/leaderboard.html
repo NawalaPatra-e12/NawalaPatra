@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+{% block meta %}
+<link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/library.css' %}" />
+<link rel="stylesheet" href="{% static 'css/leaderboard.css' %}" />
+{% endblock meta %}
+{% block content %}
+    <style>
+        
+    </style>
+
+
+<div class="content"> 
+    <h1 id="app-title"">Leaderboard</h1>
+    <h3 style="font-size: small;"> Overall only shows the Top 10</h3>
+    {% if user.is_authenticated %}
+    <h5 style="font-size: smaller;"> You can rate your favourite books in each genre</h5>
+    {% else %}
+    <a href="/login/">
+        Login now to Rate
+    </a style="font-size:smaller">
+    {% endif %}
+
+    <div class="grid-container">
+
+        <div class="grid-child">
+            <div class="filters">
+                <p style="font-weight: bold;">By Genre</p>
+        
+                <a class="filter-links" href="/leaderboard/">
+                    All
+                </a>
+                <br/>
+                <br/>
+
+            
+                {% for category in categories %}
+        <a class="filter-links" href="/leaderboard/filter/{{ category.0 }}/">
+            {{ category.1 }}   
+        </a>
+                </a>
+                <br/>
+                <br/>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="grid-child">
+        <table id="item_table">
+            <tr style="text-align: center;">
+                <th>Rank</th>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Rate</th>
+            </tr>
+    
+            {% for product in products %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>
+                    <div class="image-container">
+                        <img src="{{product.image_url}}"/>
+                    </div>
+                </td>
+                <td>{{product.title}}</td>
+                <td>{{product.author}}</td>
+                <td>{{product.category}}</td>
+                <td id="rate{{product.id}}" style="text-align: center;">{{product.rate}}
+                    {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'leaderboard:rate_button' %}" id="rate-form">
+                        {% csrf_token %}
+                        <input type="hidden" name="book_id" value="{{product.id}}">
+                        <button type="submit" id="rate-button">♡</button>
+                    </form>{% endif %}
+
+                <script src="{% static 'js/jquery.min.js' %}"></script>
+                <script>
+                $(document).ready(function() {
+                    $('#rate-form').submit(function(event) {
+                        event.preventDefault();
+                        $.ajax({
+                            url: $(this).attr('action'),
+                            type: $(this).attr('method'),
+                            data: $(this).serialize(),
+                            success: function(response) {
+                                // Do something with the response
+                            },
+                            error: function(xhr, status, error) {
+                                // Handle errors
+                            }
+                        });
+                    });
+                });
+                </script>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    
+        <script type="text/javascript">
+            function rateBook(bookId) {
+                $.ajax({
+                    url: '/rate_button/',
+                    type: 'POST',
+                    data: {
+                        'book_id': bookId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            $.ajax({
+                                url: document.URL,
+                                type: 'GET',
+                                success: function(response) {
+                                    $('#item_table').html($(response).find('#item_table').html());
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+    
+    <div class="grid-child">
+        <div class="comment-section">
+            <p style="font-weight: bold;">What do you think about the leaderboard?</p>
+            {% if user.is_authenticated %}
+            <button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#exampleModal">Comment</button>
+            {% else %}
+            <a href="/login/">
+                Login now to Comment
+            </a>
+            {% endif %}
+            <div id="commentF">
+                <p style="font-weight: bold;">Comments:</p>
+                <div id="all_comments" class="inventory row row-cols-1 g-4"></div>
+                <br/>
+
+                {% if user.is_authenticated %}
+                    <a class="filter-links" href="/leaderboard/comments/">
+                        View All
+                    </a>
+                    {% endif %}
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">What Do You Think??</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="commentForm" onsubmit="return false;">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="comment" class="col-form-label">Comment:</label>
+                        <input type="text" class="form-control" id="comment" name="comment"></input>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Comment</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+
+</html>
+
+<script>
+function rateBook(bookId) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("rate" + bookId).innerHTML =
+      parseInt(document.getElementById("rate" + bookId).innerHTML) + 1;
+      location.reload(true);
+    }
+  };
+  xhttp.open("POST", "{% url 'leaderboard:rate_button' %}", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("book_id=" + bookId + "&csrfmiddlewaretoken={{ csrf_token }}");
+}
+
+async function getComments() {
+    return fetch("{% url 'leaderboard:get_comment_json' %}").then((res) => res.json())
+}
+
+async function getUsername(user_id) {
+        const response = await fetch(`/get_username/${user_id}`);
+        return response.json();
+    }
+
+    async function refreshComments() {
+        document.getElementById("all_comments").innerHTML = ""
+        const products = await getComments()
+        let counter = 0;
+
+        let htmlString = ``
+        
+        for (const item of products.reverse()) {
+            const user_id = item.fields.user;
+            const user = await getUsername(user_id);
+            htmlString += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text u-name">@${user.username}</p>
+                        <h6 class="card-subtitle mb-2 text-muted">${item.fields.coment}</h6>
+                        
+                    </div>
+                </div>
+            </div>\n`;
+
+            counter++;
+            if (counter >= 5) break;
+        }
+        
+        document.getElementById("all_comments").innerHTML = htmlString
+    }
+
+    refreshComments()
+
+    function addComment() {
+        fetch("{% url 'leaderboard:add_comment' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#commentForm'))
+        }).then(refreshComments)
+
+        document.getElementById("commentForm").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addComment
+</script>
+
+
+
+{% endblock content %}

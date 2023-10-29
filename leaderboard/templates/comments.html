@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Leaderboard Comments{% endblock title %}
+
+{% block meta %}
+<link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/library.css' %}" />
+<link rel="stylesheet" href="{% static 'css/leaderboard.css' %}" />
+{% endblock meta %}
+
+{% block content %}
+
+<div class="content">
+
+    <h3 id="app-title">Leaderboard Comments</h3>
+
+    <p style="font-weight: bold;">What do you think about the leaderboard?</p>
+    <p>
+        You can make any discussion of the leaderboard here.
+    </p>
+
+    {% if user.is_authenticated %}
+    <button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#exampleModal">Comment</button>
+    {% else %}
+    <a href="/login/">
+        Login now to Comment
+    </a>
+    {% endif %}
+    <div id="commentF">
+        <p style="font-weight: bold;">Comments:</p>
+        <div id="all_comments" class="inventory row row-cols-1 g-4"></div>
+        <br/>
+    </div>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">What Do You Think??</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="commentForm" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="comment" class="col-form-label">Comment:</label>
+                            <input type="text" class="form-control" id="comment" name="comment"></input>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Comment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+async function getComments() {
+    return fetch("{% url 'leaderboard:get_comment_json' %}").then((res) => res.json())
+}
+
+async function getUsername(user_id) {
+        const response = await fetch(`/get_username/${user_id}`);
+        return response.json();
+    }
+
+    async function refreshComments() {
+        document.getElementById("all_comments").innerHTML = ""
+        const products = await getComments()
+        let counter = 0;
+
+        let htmlString = ``
+        
+        for (const item of products.reverse()) {
+            const user_id = item.fields.user;
+            const user = await getUsername(user_id);
+            htmlString += `\n
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text u-name">@${user.username}</p>
+                        <h6 class="card-subtitle mb-2 text-muted">${item.fields.coment}</h6>
+                        
+                    </div>
+                </div>
+            </div>\n`;
+        }
+        
+        document.getElementById("all_comments").innerHTML = htmlString
+    }
+
+    refreshComments()
+
+    function addComment() {
+        fetch("{% url 'leaderboard:add_comment' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#commentForm'))
+        }).then(refreshComments)
+
+        document.getElementById("commentForm").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addComment
+</script>
+
+{% endblock content %}

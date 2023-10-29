@@ -1,0 +1,16 @@
+button{
+    border: transparent;
+    background-color : #e71d36ff;
+    size:3cm;
+    color :aliceblue;
+}
+button:hover{
+    background-color: #ff9f1cff;
+}
+.btn-comment{
+    background-color:#2ec4b6ff;
+    color:#ffff;
+}
+.btn-comment:hover{
+    background-color:#ff9f1cff; ;
+}

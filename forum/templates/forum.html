@@ -1,0 +1,285 @@
+{% extends 'base.html' %}
+
+{% block title %}Forum{% endblock title %}
+
+{% block content %}
+
+<style>
+    #app-title {
+        font-family: 'Kidstock';
+        font-weight: bold;
+        color: #011627ff;
+        font-size: 8vh;
+        margin-bottom: 4vh;
+    }
+    .float-main{
+        padding-top: 10px;
+    }
+    #header {
+        background-color: #011627ff;
+        color: white;
+        padding: 10px;
+        border-radius: 20px;
+        text-align: center;
+    }
+    #submission{
+        width: 65%;
+        float: left;
+        padding: 5px;
+        background-color: antiquewhite;
+    }
+    #reference{
+        width: 30%;
+        float: right;
+        padding: 5px;
+        background-color: lightblue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #reference .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .card{
+        background-color: beige;
+        height: auto;
+        box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+        margin: 10px;
+        padding-left: 10px;
+    }
+    .bbtn {
+        background-color: white;
+        border-radius: 20px;
+    }
+    .image-container {
+        width: 100px;  /* Set your desired width */
+        height: 150px; /* Set your desired height */
+        overflow: hidden;
+        display: flex;
+        border-radius: 10px;
+    }
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .col-md-4{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #buttonAddStory{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+<div class="content">
+    <h1 id="app-title">Forum Discussion</h1>
+    <div id="header">
+        <h3>Feel free to engage with other people</h3>
+        <p>click the button below to create a new discussion!</p>
+        <button type="button" class="bbtn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
+    </div>
+    <div class="content">
+        <div id="discussion-submission"></div>
+    </div>
+    <div>
+        <div class="modal" id="submissionModal" tabindex="-1" aria-labelledby="submissionLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="submissionLabel">Add new discussion here!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align:left;">
+                        <form id="submissionForm" onsubmit="return false">
+                            {% csrf_token %}
+                          
+                            <div class="mb-3">
+                                <label for="description" class="col-form-label">Description:</label>
+                                <textarea class="form-control" id="description" name="description"></textarea>
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="bbtn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                            <button id="submit_discussion" type="submit" class="bbtn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="modal" id="replyModal" tabindex="-1" aria-labelledby="replyLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="replyLabel">Add a Reply!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: left;">
+                        <form id="replyForm" onsubmit="return false">
+                            {% csrf_token %}
+                            <input type="hidden" id="discussionId" value="{{ discussion.id }}">
+                            <div class="mb-3">
+                                <label for="replyText" class="col-form-label">Reply:</label>
+                                <textarea class="form-control" id="replyText" name="text"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                                <button id="submit_reply" type="submit" class="btn btn-primary" style="color: black;">Submit Reply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+</div>
+
+<script>
+    async function getDiscussion() {
+        return fetch("{% url 'forum:get_discussion_json' %}").then((res) => res.json())
+    }
+
+    async function getUsername(user_id) {
+        const response = await fetch(`/get_username/${user_id}`);
+        return response.json();
+    }
+
+    // Function to get the CSRF token from a cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    async function refreshPage() {
+        document.getElementById("discussion-submission").innerHTML = "";
+        let htmlstring = ``;
+        const description = await getDiscussion();
+
+        for (const submit of description) {
+            const user_id = submit.fields.user;
+            const user = await getUsername(user_id);
+            const discussionId = submit.pk;  // Assuming 'pk' is the discussion ID field
+            htmlstring += `
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="story-title" style="padding-top: 0px;">
+                            <p class="card-text" style="font-weight: bold" padding-top: 0px;">Posted by ${user.username} on ${submit.fields.date}</p>
+                            <hr>
+                        </div>
+                        <div>
+                            <p class="card-text">${submit.fields.description}</p>
+                        </div>
+                        <button id="add_reply" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal" data-discussion-id="{{ submit.pk }}" style="color: black; float: right;">Reply</button>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-left: 40px; margin-bottom: 30px; padding: 10px 0 0 20px;">
+                    <div class="replies">
+                        <h6>Replies:</h6>
+                        <ul>
+                            {% for reply in discussion.replies.all %}
+                                <li>
+                                    <p>${reply.text}</p>
+                                    <p>Replied by ${ reply.user.username } on ${submit.fields.date}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>\n`;
+        }
+
+        document.getElementById("discussion-submission").innerHTML = htmlstring;
+
+        // Attach a click event to the "Reply" buttons
+        const replyButtons = document.querySelectorAll("#add_reply");
+        replyButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const discussionId = this.getAttribute("data-discussion-id");
+                document.getElementById("discussionId").value = discussionId;
+            });
+        });
+    }
+
+    refreshPage();
+
+    function addDiscussion() {
+        fetch("{% url 'forum:submit_discussion_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#submissionForm'))
+        }).then(refreshPage);
+
+        document.getElementById("submissionForm").reset();
+        return false;
+    }
+
+    document.getElementById("submit_discussion").onclick = addDiscussion;
+
+
+
+    
+    // Function to handle submitting a reply
+    document.getElementById("submit_reply").onclick = function () {
+    // Get the reply text and discussion ID
+    const replyText = document.getElementById("replyText").value;
+    const discussionId = document.getElementById("discussionId").value;
+
+    // Create a new FormData object to send the data
+    const formData = new FormData();
+    formData.append("text", replyText);
+
+    // Check if the discussionId is valid
+    if (discussionId) {
+        // Construct the URL with the discussionId
+        const replyUrl = `/add_reply/${discussionId}/`;
+
+        // Send the reply using fetch
+        fetch(replyUrl, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"), // Get the CSRF token from a cookie
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                // If the reply is added successfully, close the reply modal and refresh the discussion
+                document.getElementById("replyModal").classList.remove("show");
+                document.getElementById("replyModal").setAttribute("aria-hidden", "true");
+                refreshPage();
+            }
+        })
+        .catch((error) => {
+            console.error("Error adding reply:", error);
+        });
+    } else {
+        console.error("Invalid discussionId");
+    }
+    };
+
+
+</script>
+{% endblock content %}

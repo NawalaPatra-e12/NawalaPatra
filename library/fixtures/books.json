@@ -1,0 +1,1002 @@
+[
+  {
+    "pk": 1,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41cuXWA04fL.jpg",
+      "title": "Seneca: Epistles 66-92 (Loeb No. 76)",
+      "author": "Seneca",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 2,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51z7tPa230L.jpg",
+      "title": "Classics of Buddhism and Zen, Volume 1: The Collected Translations of Thomas Cleary",
+      "author": "Thomas Cleary",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 3,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51pGeuuTZeL.jpg",
+      "title": "The Elfrida Goto Trilogy (The Solarian War Saga Books 1-3): Three Full-Length Thrilling Space Opera Novels",
+      "author": "Felix R. Savage",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 4,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41a6jrneZ5L.jpg",
+      "title": "Vital Breath of the Dao: Chinese Shamanic Tiger Qigong",
+      "author": "Zhongxian Wu",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 5,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/6195WV%2B1EaL.jpg",
+      "title": "Crazy Horse's Girlfriend",
+      "author": "Erika T. Wurth",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 6,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51M-EyTNmvL.jpg",
+      "title": "The Gangster (An Isaac Bell Adventure)",
+      "author": "Clive Cussler",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 7,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51qpv-%2BV9%2BL.jpg",
+      "title": "The White Queen (The Cousins' War)",
+      "author": "Philippa Gregory",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 8,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41268G4J0QL.jpg",
+      "title": "Journey from the Land of No: A Girlhood Caught in Revolutionary Iran",
+      "author": "Roya Hakakian",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 9,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41aM7wyC7RL.jpg",
+      "title": "Looney Bin Incorporated",
+      "author": "Marietta Rodgers",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 10,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51v41waz3TL.jpg",
+      "title": "The Courts Of Idleness (B-Berry Pleydell)",
+      "author": "Dornford Yates",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 11,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51jVcF8YHNL.jpg",
+      "title": "The Inheritor: Book Six of The Marketplace Series",
+      "author": "Laura Antoniou",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 12,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51YsvDPxuuL.jpg",
+      "title": "The Maverick of Copper Creek (Copper Creek Cowboys)",
+      "author": "R.C. Ryan",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 13,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41V8BFqBMnL.jpg",
+      "title": "Reincarnation and Karma: How They Really Affect Us: The Eastern Explanation of Our Past and Future Lives and Good or Bad Experiences",
+      "author": "Stephen Knapp",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 14,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51CsAYAoAoL.jpg",
+      "title": "Norcal 2025",
+      "author": "Bill Garwin",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 15,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41dESb94nVL.jpg",
+      "title": "For the Love of 2am: Poetry For Insomniacs",
+      "author": "Zena A. White",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 16,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51kwubDrxcL.jpg",
+      "title": "A House Divided",
+      "author": "Robert Whitlow",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 17,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41yJr7ylM7L.jpg",
+      "title": "Fallacies of the Anti Hadith argument",
+      "author": "Mr Zubair Ali",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 18,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41Qjb7XPC1L.jpg",
+      "title": "The Name of the Dead: Hieroglyphic Inscriptions of the Treasures of Tutankhamun Translated",
+      "author": "Hany Assaad",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 19,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/514y1ZCphZL.jpg",
+      "title": "A Wild Sheep Chase: A Novel",
+      "author": "Haruki Murakami",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 20,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51frnuDeUrL.jpg",
+      "title": "Heaven and Earth (Three Sisters Island Trilogy)",
+      "author": "Nora Roberts",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 21,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/61Yo1Mi1JOL.jpg",
+      "title": "She Appears! Encounters with Kwan Yin, Goddess of Compassion",
+      "author": "Sandy Boucher",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 22,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51AtTOlRmvL.jpg",
+      "title": "The Cambridge Companion to the Greek and Roman Novel (Cambridge Companions to Literature)",
+      "author": null,
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 23,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/31VezQMyQcL.jpg",
+      "title": "Oxford Studies in Philosophy of Religion Volume 6",
+      "author": null,
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 24,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41k9h2wMPEL.jpg",
+      "title": "License to Lie",
+      "author": "Terry Ambrose",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 25,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51Oib1mQuuL.jpg",
+      "title": "True Honor (Uncommon Heroes, Book 3)",
+      "author": "Dee Henderson",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 26,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51ZLb43JhhL.jpg",
+      "title": "A Replacement Life: A Novel (P.S.)",
+      "author": "Boris Fishman",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 27,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/61HmWM642cL.jpg",
+      "title": "Strands of Sorrow (Black Tide Rising)",
+      "author": "John Ringo",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 28,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51UsMAGYuyL.jpg",
+      "title": "Shadow Fall (Tracers)",
+      "author": "Laura Griffin",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 29,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41R1e%2BfhjEL.jpg",
+      "title": "The Lord of the Rings 1954-2004: Scholarship in Honor of Richard E. Blackwelder",
+      "author": null,
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 30,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51sq9DvAqEL.jpg",
+      "title": "The Lands of Ice and Fire (A Game of Thrones): Maps from King's Landing to Across the Narrow Sea",
+      "author": "George R. R. Martin",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 31,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51G2Y9R1QFL.jpg",
+      "title": "Clanbook: Malkavian, Revised Edition (Vampire: The Masquerade Clanbooks)",
+      "author": "Jess Heinig",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 32,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41SrzTpjSTL.jpg",
+      "title": "Intermarriage and Conversion: A Halakhic Solution",
+      "author": "J. Simcha Cohen",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 33,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51LrGk8EeML.jpg",
+      "title": "Wicked Autumn: A Max Tudor Novel",
+      "author": "G. M. Malliet",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 34,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51s3kqz2O8L.jpg",
+      "title": "The Big Book of Building: Everything Minecraft�� Imagine it� Create it� Build it",
+      "author": "Triumph Books",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 35,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51I7IOwB%2BqL.jpg",
+      "title": "The Sonnets and a Lover's Complaint (Hardcover Classics)",
+      "author": "William Shakespeare",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 36,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41UAKMfvDHL.jpg",
+      "title": "Gandhi's Ascetic Activism: Renunciation and Social Action",
+      "author": "Veena R. Howard",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 37,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51g7xyZDGnL.jpg",
+      "title": "Baha'I Prayers: A Selection of Prayers",
+      "author": "Baha'u'llah",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 38,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51usO70-1UL.jpg",
+      "title": "The Rise of Renegade X (Volume 1)",
+      "author": "Chelsea M Campbell",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 39,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51b5De9ps8L.jpg",
+      "title": "All My Friends Are Superheroes",
+      "author": "Andrew Kaufman",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 40,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51rSqE9IomL.jpg",
+      "title": "The Best American Essays of the Century (The Best American Series)",
+      "author": null,
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 41,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51oUECPwz%2BL.jpg",
+      "title": "The Melancholy Death of Oyster Boy & Other Stories",
+      "author": "Tim Burton",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 42,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51Ka9EAQUeL.jpg",
+      "title": "Guide to the Bodhisattva's Way of Life: How to enjoy a life of great meaning and altruism",
+      "author": "Shantideva",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 43,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51wLqV73eDL.jpg",
+      "title": "The Sniper and the Wolf: A Sniper Elite Novel",
+      "author": "Scott McEwen",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 44,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51AONlGu%2BSL.jpg",
+      "title": "In Pursuit of Spenser: Mystery Writers on Robert B. Parker and the Creation of an American Hero",
+      "author": null,
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 45,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51nscf59YsL.jpg",
+      "title": "For Elise",
+      "author": "Sarah M. Eden",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 46,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51HTNAT0JVL.jpg",
+      "title": "The Lord of the Rings: The Fellowship of the Rings: A Strategy Battle Game",
+      "author": "Marc Gascoigne",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 47,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41dsZl94ZML.jpg",
+      "title": "The Last Victim: A Novel (Dr. Charlotte Stone)",
+      "author": "Karen Robards",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 48,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51eikBd88JL.jpg",
+      "title": "299 Days: The 43 Colonels (Volume 10)",
+      "author": "Glen Tate",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 49,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51o2UG3sp3L.jpg",
+      "title": "A Clash of Kings (A Song of Ice and Fire, Book 2)",
+      "author": "George R. R. Martin",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 50,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41YYXuupRML.jpg",
+      "title": "Der Kleine Prinz (German)",
+      "author": "Antoine de Saint-Exupéry",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 51,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/5102S0GP5LL.jpg",
+      "title": "The Rise of the Empire: Star Wars: Featuring the novels Star Wars: Tarkin, Star Wars: A New Dawn, and 3 all-new short stories",
+      "author": "John Jackson Miller",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 52,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51luHH98Z3L.jpg",
+      "title": "Dorothy L. Sayers: The Complete Stories",
+      "author": "Dorothy L. Sayers",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 53,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51PtnNC45mL.jpg",
+      "title": "Spiritual Astrology: A Path to Divine Awakening",
+      "author": "Jan Spiller",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 54,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51irExW3bpL.jpg",
+      "title": "The Fisherman: A Novel",
+      "author": "Larry Huntsperger",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 55,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51sbcSrIu9L.jpg",
+      "title": "Le Morte Darthur (Norton Critical Editions)",
+      "author": "Sir Thomas Malory",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 56,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51knps4zMHL.jpg",
+      "title": "Hiring the Heavens: A Practical Guide to Developing Working Relationships with the Spirits of Creation",
+      "author": "Jean Slatter",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 57,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/515lKF3VPOL.jpg",
+      "title": "Alan Price and The Colossus of Rhodes (The Nephilim Chronicles ) (Volume 1)",
+      "author": "Jonathan Yanez",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 58,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51ISJZX4GXL.jpg",
+      "title": "Highland Harmony: Avelina and Drew (Clan Grant Series) (Volume 8)",
+      "author": "Keira Montclair",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 59,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51QRtiFZJtL.jpg",
+      "title": "Eternity's Sunrise: The Imaginative World of William Blake",
+      "author": "Leo Damrosch",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 60,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51um2nBNdoL.jpg",
+      "title": "Celtic Viking: Heart of the Battle Series, Book 1",
+      "author": "Lexy Timms",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 61,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/61SeZb2MvjL.jpg",
+      "title": "A Lady at Willowgrove Hall (Whispers On The Moors)",
+      "author": "Sarah E. Ladd",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 62,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51mGJ4PmMzL.jpg",
+      "title": "Star Wars: The Jedi Path",
+      "author": "Daniel Wallace",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 63,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/61OF0-7LtuL.jpg",
+      "title": "Sixth World Almanac (Shadowrun (Catalyst Hardcover))",
+      "author": "John Schmidt",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 64,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51g6OhERteL.jpg",
+      "title": "Soul Surfer: A True Story of Faith, Family, and Fighting to Get Back on the Board",
+      "author": "Bethany Hamilton",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 65,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41rBl7D9YeL.jpg",
+      "title": "The Trust Company",
+      "author": "Paul N Stam",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 66,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/410oYwwjssL.jpg",
+      "title": "The Words of Gandhi (Newmarket Words Of Series)",
+      "author": "Mahatma Gandhi",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 67,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41ST0F0KHEL.jpg",
+      "title": "Sherlock Holmes: The Major Stories with Contemporary Critical Essays (Bedford Series in History & Culture)",
+      "author": "Arthur Conan Doyle",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 68,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51-RntCdC-L.jpg",
+      "title": "This Book Is Full of Spiders: Seriously, Dude, Don't Touch It (John Dies at the End)",
+      "author": "David Wong",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 69,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51PTGUmpY3L.jpg",
+      "title": "The Time Keeper",
+      "author": "Mitch Albom",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 70,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51W2%2B01mkVL.jpg",
+      "title": "Cook's Big Day: An Angie Amalfi Mystery (The Angie Amalfi Mysteries) (Volume 16)",
+      "author": "Joanne Pence",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 71,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51P9WLKoZlL.jpg",
+      "title": "The Rewind Files",
+      "author": "Claire Willett",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 72,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41fBUGHemXL.jpg",
+      "title": "On Conan Doyle: Or, The Whole Art of Storytelling (Writers on Writers)",
+      "author": "Michael Dirda",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 73,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/612wLxgw1QL.jpg",
+      "title": "Broken Earth (Savage Worlds)",
+      "author": "Matthew J. Hanson",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 74,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51tXQU%2BZhDL.jpg",
+      "title": "Put Out More Flags",
+      "author": "Evelyn Waugh",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 75,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51cmfPPisHL.jpg",
+      "title": "Proof of Innocence (Capitol K-9 Unit)",
+      "author": "Lenora Worth",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 76,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51CzNu02ISL.jpg",
+      "title": "The Shell Collector: Stories",
+      "author": "Anthony Doerr",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 77,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/5149VTiHKrL.jpg",
+      "title": "Hell or High Water (The Deep Six)",
+      "author": "Julie Ann Walker",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 78,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/513U9pJzm7L.jpg",
+      "title": "Pathfinder Pawns: Giantslayer Pawn Collection",
+      "author": "Rob McCreary",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 79,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41uhmxTam-L.jpg",
+      "title": "Gems from the Equinox: Instructions by Aleister Crowley for His Own Magical Order",
+      "author": "Aleister Crowley",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 80,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51TajDxQ0eL.jpg",
+      "title": "Sign of a Promise and Other Stories (Mandate Series)",
+      "author": "James Calvin Schaap",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 81,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51pum0eWe4L.jpg",
+      "title": "A Partner in Holiness: Deepening Mindfulness, Practicing Compassion and Enriching Our Lives Through the Wisdom of R. Levi Yitzhak of Berdichev's, Vol. 2  (Institute for Jewish Spirituality)",
+      "author": "Rabbi Jonathan P. Slater DMin",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 82,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51y%2BysN7MPL.jpg",
+      "title": "Agent to the Stars",
+      "author": "John Scalzi",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 83,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51T3GSdb4hL.jpg",
+      "title": "My Fair Gentleman (Proper Romance) (A Proper Romance)",
+      "author": "Nancy Campbell Allen",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 84,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51jIUahXjDL.jpg",
+      "title": "A Bridge Through Time: Book 1 of The Thistle & Hive Series",
+      "author": "Jennae Vale",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 85,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/61dX53tzpPL.jpg",
+      "title": "Greenwode: The Wode, Book 1",
+      "author": "J Tullos Hennig",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 86,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51k-RKw%2BJML.jpg",
+      "title": "Bella's Christmas Bake Off: A fabulously funny, feel good Christmas read",
+      "author": "Sue Watson",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 87,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51tuZK1fOML.jpg",
+      "title": "More Christmas on Stage: An Anthology of Royalty-Free Christmas Plays",
+      "author": "Rhonda Wray",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 88,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51t2uBEMp3L.jpg",
+      "title": "Love in Provence: Romantic Adventures in the South of France",
+      "author": "Yvone Lenard",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 89,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51w9-tFPSHL.jpg",
+      "title": "The Welcome Committee of Butternut Creek: A Novel",
+      "author": "Jane Myers Perrine",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 90,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/517YTQ0oXtL.jpg",
+      "title": "The Man Who Smiled (Kurt Wallander Series)",
+      "author": "Henning Mankell",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 91,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/412GcWvG%2BPL.jpg",
+      "title": "When Zarathustra Spoke: The Reformation Of Neolithic Culture And Religion (Bibliotheca Iranica: Zoroastrian Studies)",
+      "author": "Mary Settegast",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 92,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51G-4OL92ZL.jpg",
+      "title": "The Magical Power of the Saints: Evocation and Candle Rituals",
+      "author": "Rev Ray T. Malbrough",
+      "category": "Religion & Spirituality"
+    }
+  },
+  {
+    "pk": 93,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51TLjyIjU%2BL.jpg",
+      "title": "Shadowrun: Third Edition (FPR25000)",
+      "author": "FanPro",
+      "category": "Science Fiction & Fantasy"
+    }
+  },
+  {
+    "pk": 94,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51GEXT3Y4RL.jpg",
+      "title": "Doctor Zhivago (Everyman's Library)",
+      "author": "Boris Pasternak",
+      "category": "Romance"
+    }
+  },
+  {
+    "pk": 95,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51uNnIlIwrL.jpg",
+      "title": "Literature and Its Writers: A Compact Introduction to Fiction, Poetry, and Drama",
+      "author": "Ann Charters",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 96,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51e%2B0kvWt-L.jpg",
+      "title": "Gray Mountain: A Novel",
+      "author": "John Grisham",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 97,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51FB6K4S7WL.jpg",
+      "title": "Challenge The Widow-Maker And Other Stories Of People In Peril",
+      "author": "Clark Howard",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 98,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/41pnyAVQMCL.jpg",
+      "title": "Never Forget About Me",
+      "author": "Joseph Starzyk",
+      "category": "Literature & Fiction"
+    }
+  },
+  {
+    "pk": 99,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51RxQEhtYyL.jpg",
+      "title": "Her Final Breath (The Tracy Crosswhite Series)",
+      "author": "Robert Dugoni",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  },
+  {
+    "pk": 100,
+    "model": "library.book",
+    "fields": {
+      "image_url": "http://ecx.images-amazon.com/images/I/51uJz4Jd-hL.jpg",
+      "title": "The Crime Wave: Collected Nonfiction (The Ace Performer Collection series)",
+      "author": "Dashiell Hammett",
+      "category": "Mystery, Thriller & Suspense"
+    }
+  }
+]
