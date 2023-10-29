@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Library{% endblock title %}
+
 {% block meta %}
 <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
 <link rel="stylesheet" href="{% static 'css/library.css' %}" />
@@ -12,6 +14,10 @@
 <div class="content">
 
     <h1 id="app-title">Library</h1>
+
+    <p class="invisible">{{ current_user_id }}</p>
+    <h4 class="darkblue-text"> {{ search_string }} </h4>
+    <br/>
 
     <div class="grid-container">
 
@@ -81,6 +87,7 @@
                 </tbody>
                 
             </table>
+            <p> {{ whoops }} </p>
         </div>
         
         <div class="grid-child">
@@ -149,6 +156,8 @@
 
 <script>
 
+    const currentUserId = document.querySelector(".invisible").innerHTML;
+
     async function getRequests() {
         return fetch("{% url 'library:get_request_json' %}").then((res) => res.json())
     }
@@ -168,19 +177,39 @@
         for (const item of products.reverse()) {
             const user_id = item.fields.user;
             const user = await getUsername(user_id);
+
+            let textCol = "green-text";
+            let addedText = "";
+
+            if (Number(currentUserId) === user_id) {
+                textCol = "orange-text";
+                addedText = "(you)";
+            }
+
             htmlString += `\n
-            <div class="col">
+            <div class="col" id="card_${item.pk}">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">${item.fields.book_title}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Book by ${item.fields.book_author}</h6>
                         <p class="card-text">${item.fields.reason}</p>
 
-                        <p class="card-text u-name">@${user.username}</p>
+                        <p class="card-text ${textCol}">@${user.username} ${addedText}</p>
                         <p class="card-text date-post" style="font-size: 1vh;">
                         Request posted on ${item.fields.date_added}
                         </p>
-                        
+                        <br/>\n`;
+
+            if (Number(currentUserId) === user_id) {
+                htmlString += `\n
+                <form class="date-post del-req" action="/library/delete-request/${item.pk}/" method="post" id="delete_form_${item.pk}" onsubmit="return false;">
+                    {% csrf_token %}
+
+                    <button type="button" onclick="delRequest(${item.pk})" class="btn btn-sm btn btn-outline-danger">Delete</button>
+                </form>\n`;
+            }
+
+            htmlString += `\n
                     </div>
                 </div>
             </div>\n`;
@@ -193,6 +222,14 @@
     }
 
     refreshRequests()
+
+    function delRequest(id) {
+        fetch(`/library/delete-request/${id}/`, {
+            method: "POST",
+        }).then(refreshRequests)
+
+        return false
+    }
 
     function addRequest() {
         fetch("{% url 'library:add_request_ajax' %}", {

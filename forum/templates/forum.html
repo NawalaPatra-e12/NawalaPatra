@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+
+{% block title %}Forum{% endblock title %}
+
 {% block content %}
 
 <style>
@@ -47,7 +50,7 @@
         margin: 10px;
         padding-left: 10px;
     }
-    .btn{
+    .bbtn {
         background-color: white;
         border-radius: 20px;
     }
@@ -80,7 +83,7 @@
     <div id="header">
         <h3>Feel free to engage with other people</h3>
         <p>click the button below to create a new discussion!</p>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
+        <button type="button" class="bbtn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
     </div>
     <div class="content">
         <div id="discussion-submission"></div>
@@ -102,17 +105,41 @@
                                 <textarea class="form-control" id="description" name="description"></textarea>
                             </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
-                            <button id="submit_discussion" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
+                            <button type="button" class="bbtn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                            <button id="submit_discussion" type="submit" class="bbtn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
                         </div>
-
-                    
-
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        
+        
+        <div class="modal" id="replyModal" tabindex="-1" aria-labelledby="replyLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="replyLabel">Add a Reply!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="text-align: left;">
+                        <form id="replyForm" onsubmit="return false">
+                            {% csrf_token %}
+                            <input type="hidden" id="discussionId" value="{{ discussion.id }}">
+                            <div class="mb-3">
+                                <label for="replyText" class="col-form-label">Reply:</label>
+                                <textarea class="form-control" id="replyText" name="text"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
+                                <button id="submit_reply" type="submit" class="btn btn-primary" style="color: black;">Submit Reply</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
     </div>
 
 </div>
@@ -122,12 +149,31 @@
         return fetch("{% url 'forum:get_discussion_json' %}").then((res) => res.json())
     }
 
+    // Function to get the CSRF token from a cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === name + "=") {
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     async function refreshPage() {
-        document.getElementById("discussion-submission").innerHTML=""
-        let htmlstring = ``
-        const description = await getDiscussion()
+        document.getElementById("discussion-submission").innerHTML = "";
+        let htmlstring = ``;
+        const description = await getDiscussion();
         description.forEach((submit) => {
-            htmlstring += `\n
+            const discussionId = submit.pk;  // Assuming 'pk' is the discussion ID field
+            htmlstring += `
             <div class="col">
                 <div class="card">
                     <div class="card-body">
@@ -138,30 +184,94 @@
                         <div>
                             <p class="card-text">${submit.fields.description}</p>
                         </div>
-
-                        
-                       
+                        <button id="add_reply" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal" data-discussion-id="{{ submit.pk }}" style="color: black; float: right;">Reply</button>
                     </div>
                 </div>
-            </div>\n`
+
+                <div class="card" style="margin-left: 40px; margin-bottom: 30px; padding: 10px 0 0 20px;">
+                    <div class="replies">
+                        <h6>Replies:</h6>
+                        <ul>
+                            {% for reply in discussion.replies.all %}
+                                <li>
+                                    <p>${reply.text}</p>
+                                    <p>Replied by ${ reply.user.username } on ${submit.fields.date}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>\n`;
         });
 
-        document.getElementById("discussion-submission").innerHTML = htmlstring
+        document.getElementById("discussion-submission").innerHTML = htmlstring;
+
+        // Attach a click event to the "Reply" buttons
+        const replyButtons = document.querySelectorAll("#add_reply");
+        replyButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                const discussionId = this.getAttribute("data-discussion-id");
+                document.getElementById("discussionId").value = discussionId;
+            });
+        });
     }
 
-    refreshPage()
+    refreshPage();
 
     function addDiscussion() {
         fetch("{% url 'forum:submit_discussion_ajax' %}", {
             method: "POST",
             body: new FormData(document.querySelector('#submissionForm'))
-        }).then(refreshPage)
+        }).then(refreshPage);
 
-        document.getElementById("submissionForm").reset()
-        return false
+        document.getElementById("submissionForm").reset();
+        return false;
     }
 
-    document.getElementById("submit_discussion").onclick = addDiscussion
+    document.getElementById("submit_discussion").onclick = addDiscussion;
+
+
+
+    
+    // Function to handle submitting a reply
+    document.getElementById("submit_reply").onclick = function () {
+    // Get the reply text and discussion ID
+    const replyText = document.getElementById("replyText").value;
+    const discussionId = document.getElementById("discussionId").value;
+
+    // Create a new FormData object to send the data
+    const formData = new FormData();
+    formData.append("text", replyText);
+
+    // Check if the discussionId is valid
+    if (discussionId) {
+        // Construct the URL with the discussionId
+        const replyUrl = `/add_reply/${discussionId}/`;
+
+        // Send the reply using fetch
+        fetch(replyUrl, {
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"), // Get the CSRF token from a cookie
+            },
+        })
+        .then((response) => {
+            if (response.ok) {
+                // If the reply is added successfully, close the reply modal and refresh the discussion
+                document.getElementById("replyModal").classList.remove("show");
+                document.getElementById("replyModal").setAttribute("aria-hidden", "true");
+                refreshPage();
+            }
+        })
+        .catch((error) => {
+            console.error("Error adding reply:", error);
+        });
+    } else {
+        console.error("Invalid discussionId");
+    }
+    };
+
 
 </script>
 {% endblock content %}

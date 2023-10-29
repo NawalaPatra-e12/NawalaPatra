@@ -6,6 +6,7 @@ from django.core import serializers
 from main.models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from mybooks.models import Bookmark
 
 
 CATEGORIES_NUM = [
@@ -24,6 +25,8 @@ def show_library(request):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
+        'current_user_id': request.user.id,
+        'search_string': "",
     }
 
     return render(request, "library.html", context)
@@ -34,6 +37,7 @@ def show_requests(request):
     
     context = {
         'products': data,
+        'current_user_id': request.user.id,
     }
 
     return render(request, "requests.html", context)
@@ -50,11 +54,21 @@ def search_products(request):
             search_filter &= Q(title__icontains=word) | Q(author__icontains=word) | Q(category__icontains=word)
 
         data = Book.objects.filter(search_filter)
+        whoops = ""
+
+        if (len(data) == 0):
+            whoops = "Whoops, looks like there's nothing here!"
+
+
+        search_string = f"Showing results for: {searched}"
 
         context={
-            'searched': searched,
             'products': data,
             'categories': CATEGORIES_NUM,
+            'current_user_id': request.user.id,
+            'search_string': search_string,
+            'searched': searched,
+            'whoops': whoops,
         }
 
         return render(request, "library.html", context)
@@ -70,6 +84,8 @@ def filter_category(request, id):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
+        'current_user_id': request.user.id,
+        'search_string': "",
     }
 
     return render(request, "library.html", context)
@@ -77,12 +93,10 @@ def filter_category(request, id):
 @login_required(login_url='/login/')
 def bookmark_book(request):
     if request.method == 'POST':
+        user_profile = request.user
         book_id = request.POST.get('book_id')
         book = get_object_or_404(Book, pk=book_id)
-        user_profile = request.user.userprofile
-
-        if book not in user_profile.bookmarked_books.all():
-            user_profile.bookmarked_books.add(book)
+        bookmark = Bookmark.objects.get_or_create(user=user_profile, book=book)
     return redirect('library:show_library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF
@@ -119,5 +133,13 @@ def add_request_ajax(request):
         new_product.save()
 
         return HttpResponse(b"CREATED", status=201)
+    return HttpResponseNotFound()
 
+@csrf_exempt
+def bookreq_delete(request, id):
+    bookreq = get_object_or_404(Request, id=id)
+    if request.method == 'POST':
+        bookreq.delete()
+
+        return HttpResponse(b"DELETED", status=204)
     return HttpResponseNotFound()

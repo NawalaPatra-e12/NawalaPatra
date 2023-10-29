@@ -1,0 +1,67 @@
+#important {
+    background-image: linear-gradient(90deg, #2ec4b6ff 2%, #e71d36ff 2%, #e71d36ff 4%, #ff9f1cff 4%, #ff9f1cff 6%, #011627ff 6%);
+    background-size: 100% 100%;
+}
+
+@media (max-width: 768px) {
+    #important {
+        background-color: #011627ff;
+        background-image: none;
+    }
+}
+
+.container-fluid {
+    padding-left: 7vw;
+}
+
+#appname {
+    font-family: 'Kidstock';
+    font-weight: bold;
+    color: white;
+    font-size: 32px;
+}
+
+#user-dropdown:active {
+    color: #2ec4b6ff;
+}
+
+#user-dropdown:hover {
+    color: #2ec4b6ff;
+}
+
+.navbar .nav-link {
+    color: white;
+}
+
+.navbar .nav-item .nav-link {
+    color: white;
+}
+
+.navbar .nav-item.dropdown.active .nav-link {
+    font-weight: bold;
+}
+
+.navbar .nav-item .nav-link:hover {
+    color: #2ec4b6ff;
+}
+
+.navbar .nav-item .nav-link:active {
+    color: #2ec4b6ff;
+}
+
+.dropdown .dropdown-menu-right {
+    right: 0;
+    left: auto;
+}
+
+.input-group {
+    margin-right: 2vw;
+}
+
+#example-search-input {
+    width: 24vw !important;
+}
+
+.navbar-toggler-icon {
+    color: white !important;
+}

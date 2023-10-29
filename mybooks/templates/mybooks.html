@@ -1,51 +1,218 @@
 {% extends 'base.html' %}
 
-{% block meta %}
-    <!-- <style>
-        .image-container {
-            width: 100px;  /* Set your desired width */
-            height: 150px; /* Set your desired height */
-            overflow: hidden;
-        }
+{% block title %}My Books{% endblock title %}
 
-        .image-container img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-        }
-    </style> -->
+{% block meta %}
+<style>
+    .image-container {
+        width: 100px;  /* Set your desired width */
+        height: 150px; /* Set your desired height */
+        overflow: hidden;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    #app-title {
+        font-family: 'Kidstock';
+        font-weight: bold;
+        color: #011627ff;
+        font-size: 8vh;
+        margin-bottom: 4vh;
+    }
+    .filter-links {
+        padding-right: 1vw;
+    }
+    .grid-container {
+        display: grid;
+        grid-template-columns: 0.5fr 4fr;
+        grid-gap: 24px;
+    }
+    .btn-primary {
+        background-color: #2ec4b6ff !important;
+        border-color: #2ec4b6ff !important;
+    }
+    .filter-links {
+        color: #e71d36ff;
+        background-color: transparent;
+        text-align: left;
+        border-color: transparent;
+    }
+    .filter-links:hover {
+        color: #bd1429;
+        text-decoration: none;
+        font-size: large;
+        font-weight: bold;
+    }
+    .review-container {
+        text-align: justify;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+</style>
 {% endblock meta %}
 
 {% block content %}
-
 <div class="content">
-    <!-- <a href="/library/filter/1/">
-        <button>Literature & Fiction</button>
-    </a>
-     -->
-    <table>
-        <tr>
-            <th>No.</th>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-        </tr>
-    
-        {% for product in bookmarked_books %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>
-                    <div class="image-container">
-                        <img src="{{product.image_url}}"/>
-                    </div>
-                </td>
-                <td>{{product.title}}</td>
-                <td>{{product.author}}</td>
-                <td>{{product.category}}</td>
-            </tr>
-        {% endfor %}
-    </table>
+    <h1 id="app-title">MyBooks</h1>
+
+    <div class="grid-container">
+
+        <div class="grid-child">
+            <div class="filters">
+                <p style="font-weight: bold;">Sort by Genre</p>
+        
+                <button class="filter-links" onclick="updateFilter(0)">
+                    All
+                </button>
+                <br/>
+                <br/>
+
+                {% for category in categories %}
+                <button class="filter-links" onclick="updateFilter({{ category.0 }})">
+                    {{ category.1 }}
+                </button>
+                <br/>
+                <br/>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="grid-child">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Cover</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Author</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Personal Review</th>
+                        <th scope="col">Remove</th>
+                </thead>
+                <tbody id="table_content"></tbody> 
+            </table>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Personal Review</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="formReview" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="review" class="col-form-label">Review:</label>
+                            <textarea class="form-control" id="review" name="review" rows=15></textarea>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+        
+<script>
+    let pkReview = 0
+    let indexFilter = 0
+
+    async function getBookmarks(filter) {
+        // console.log(indexFilter)
+        // fetch(`/mybooks/get_bookmark_json/`, {
+        //     method: "GET",
+        //     body: new FormData(indexFilter)
+        // })
+        // ${indexFilter}/
+        return fetch(`/mybooks/get_bookmark_json/?category_filter=${filter}`).then((res) => res.json())
+    }
+    async function refreshBookmarks() {
+        document.getElementById("table_content").innerHTML = "";
+        const products = await getBookmarks(indexFilter);
+        let htmlString = "";
+        products.result.forEach((bookmark, index) => {
+            const reviewContent = bookmark.review ? `<p>${bookmark.review}</p>` : '';
+            htmlString += `
+                <tr>
+                    <th scope="row">${index + 1}</th>
+                    <td>
+                        <div class="image-container">
+                            <img src="${bookmark.book.image_url}"/>
+                        </div>
+                    </td>
+                    <td>${bookmark.book.title}</td>
+                    <td>${bookmark.book.author}</td>
+                    <td>${bookmark.book.category}</td>
+                    <td>
+                        <div class="review-container">
+                            ${reviewContent}
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="updatePkReview(${bookmark.pk}, '${bookmark.review}')">
+                                    ${bookmark.review ? 'Edit' : 'Review'}
+                                </button>
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="removeBookmark(${bookmark.pk})">Remove</button>
+                    </td>
+                </tr>
+            `;
+        });
+        document.getElementById("table_content").innerHTML = htmlString;
+    }
+    refreshBookmarks()
+
+    function removeBookmark(id) {
+        fetch("{%url 'mybooks:remove_bookmark' %}", {
+            method: "DELETE",
+            body: JSON.stringify({ id: id })
+        }).then(refreshBookmarks)
+    }
+
+    function addReview() {
+        fetch(`/mybooks/add_review_ajax/${pkReview}/`, {
+            method: "POST",
+            body: new FormData(document.querySelector('#formReview'))
+        }).then(refreshBookmarks)
+
+        document.getElementById("formReview").reset()
+        return false
+    }
+    document.getElementById("button_add").onclick = addReview
+
+    function updatePkReview(newPk, reviewContent) {
+        pkReview = newPk;
+        const reviewTextarea = document.getElementById("review");
+        if (reviewContent) {
+            reviewTextarea.value = reviewContent;
+        } else {
+            reviewTextarea.value = ""; 
+        }
+    }
+
+    function updateFilter(newIndex) {
+        indexFilter = newIndex
+        console.log(indexFilter)
+        refreshBookmarks()
+    }
+
+
+</script>
+
 
 {% endblock content %}
