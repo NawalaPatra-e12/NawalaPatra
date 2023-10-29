@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Discussion(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    date = models.DateField(null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
     description = models.TextField()
 
 class Reply(models.Model):
