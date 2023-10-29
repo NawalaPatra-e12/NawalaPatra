@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <style>
     .float-main{
         padding-top: 10px;
     }
-    #prompt {
-        background-color: rgb(195, 211, 240);
+    #header {
+        background-color: #011627ff;
+        color: white;
         padding: 10px;
+        border-radius: 20px;
         text-align: center;
     }
     #submission{
@@ -70,15 +71,15 @@
 
 <div class="content">
     
-    <div id="prompt">
-        <h3>Forum Diskusi</h3>
+    <div id="header">
+        <h3>Discussion Forum</h3>
+        <h1>Engage with other people</h1>
     </div>
     
     <div class="content">
         <table>
             {% for discussion in data %}
                 <tr>
-                    <td>{{discussion.title}}</td>
                     <td>{{discussion.description}}</td>
                 </tr>
             {% endfor %}
@@ -99,10 +100,6 @@
                     <div class="modal-body" style="text-align:left;">
                         <form id="submissionForm" onsubmit="return false">
                             {% csrf_token %}
-                            <div class="mb-3">
-                                <label for="title" class="col-form-label">Title  :</label>
-                                <input type="text" class="form-control" id="title" name="title"></input>
-                            </div>
                             <div class="mb-3">
                                 <label for="description" class="col-form-label">Description :</label>
                                 <textarea class="form-control" id="description" name="description"></textarea>
@@ -128,14 +125,13 @@
     async function refreshPage() {
         document.getElementById("discussion-submission").innerHTML=""
         let htmlstring = ``
-        const stories = await getDiscussion()
-        stories.forEach((submit) => {
+        const discussion = await getDiscussion()
+        discussion.forEach((submit) => {
             htmlstring += `\n
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <div id="discussion-title">
-                            <h4 class="card-title">${submit.fields.title}</h4>
                             <h5 class="card-text">by ${submit.fields.user.username}</h5>
                         </div>
                         <div>

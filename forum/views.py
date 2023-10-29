@@ -14,45 +14,45 @@ from forum.models import Discussion
 # Show main library page.
 @login_required(login_url='/login/')
 def show_discussion(request):
-    data = Discussion.objects.all()
+    description = Discussion.objects.all()
     
     context = {
-        'discussion': data,
+        'discussion': description,
     }
     return render(request, "forum.html", context)
 
 def show_xml(request):
-    data = Discussion.objects.all()
-    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    description = Discussion.objects.all()
+    return HttpResponse(serializers.serialize("xml", description), content_type="application/xml")
 
 def show_json(request):
-    data = Discussion.objects.all()
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    description = Discussion.objects.all()
+    return HttpResponse(serializers.serialize("json", description), content_type="application/json")
 
 def show_xml_by_id(request, id):
-    data = Discussion.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    description = Discussion.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("xml", description), content_type="application/xml")
 
 def show_json_by_id(request, id):
-    data = Discussion.objects.filter(pk=id)
-    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    description = Discussion.objects.filter(pk=id)
+    return HttpResponse(serializers.serialize("json", description), content_type="application/json")
 
 def get_discussion_json(request):
     # current_week = datetime.date.today().isocalendar()[1]
     # prompt = Prompt.objects.get(week=current_week)
     # story = Submission.objects.filter(prompt=prompt)
-    data = Discussion.objects.all()
-    return HttpResponse(serializers.serialize('json', data))
+    description = Discussion.objects.all()
+    return HttpResponse(serializers.serialize('json', description))
 
 @csrf_exempt
 def submit_discussion_ajax(request):
     if request.method == 'POST':
-        title = request.POST.get("title")
         description = request.POST.get("description")
         date = datetime.datetime.now()
         user = request.user
+        username = request.user.username
 
-        new_discussion = Discussion(title=title, description=description, date=date, user=user)
+        new_discussion = Discussion(description=description, date=date, user=user, username=username)
         new_discussion.save()
 
         return HttpResponse(b"CREATED", status=201)
