@@ -82,11 +82,9 @@
         <p>click the button below to create a new discussion!</p>
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
     </div>
-    
     <div class="content">
         <div id="discussion-submission"></div>
     </div>
-    
     <div>
         <div class="modal" id="submissionModal" tabindex="-1" aria-labelledby="submissionLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -98,8 +96,9 @@
                     <div class="modal-body" style="text-align:left;">
                         <form id="submissionForm" onsubmit="return false">
                             {% csrf_token %}
+                          
                             <div class="mb-3">
-                                <label for="description" class="col-form-label">Description :</label>
+                                <label for="description" class="col-form-label">Description:</label>
                                 <textarea class="form-control" id="description" name="description"></textarea>
                             </div>
                         <div class="modal-footer">
@@ -130,8 +129,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div id="story-title" style="padding-top: 0px;">
-                            <p class="card-text" style="font-weight: bold; padding-top: 0px;">by ${submit.fields.user}</p>
-                            <p class="card-text">${submit.fields.date}</p>
+                            
+                            <p class="card-text" ; padding-top: 0px;">by ${submit.fields.user} - ${submit.fields.date}</p>
                             <hr>
                         </div>
                         <div>
