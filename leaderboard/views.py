@@ -58,7 +58,7 @@ def get_book_json(request):
     return HttpResponse(serializers.serialize('json', book))
 
 def get_comment_json(request):
-    comment = Comment.objects.all()
+    comment = Comment.objects.select_related("user")
     return HttpResponse(serializers.serialize('json', comment))
 
 @csrf_exempt
@@ -67,8 +67,19 @@ def add_comment(request):
         user = request.user
         comment = request.POST.get("comment")
 
-        new_comment = Comment(comment=comment)
+        new_comment = Comment(coment=comment)
         new_comment.user = user
+        new_comment.save()
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@login_required(login_url='/login/')
+def show_comment(request):
+    data = Comment.objects.all()
+    
+    context = {
+        'products': data,
+    }
+
+    return render(request, "comments.html", context)
