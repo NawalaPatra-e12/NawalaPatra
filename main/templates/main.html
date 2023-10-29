@@ -99,6 +99,33 @@
             text-align: center;
             position: relative;
         }
+        .image-container {
+            width: 160px;  /* Set your desired width */
+            height: 240px; /* Set your desired height */
+            overflow: hidden;
+            display: flex;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        #bookmark_list{
+            flex-direction: row;
+            text-align: center;
+            position: relative;
+            justify-content: space-around;
+            padding: 20px;
+            padding-top: 10px;
+            display: flex;
+        }
+        .mybooks_item{
+            flex-direction: row;
+            width: 100%;
+            border-radius: 30px;
+            background-color: #121212;
+            height: 430px;
+        }
     </style>
 {% endblock meta %}
 
@@ -107,7 +134,7 @@
 <div class="content">
     <center>
         <h1 id="app-title">Welcome to NawalaPatra!</h1>
-        <p>Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
+        <p style="font-weight: bold;">Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
     </center>
 
     <div id="card_container">
@@ -163,16 +190,24 @@
     </div> 
 
     {% if user.is_authenticated %}
-    <div id="mybooks-section" style="height: 150px;">
-        <div class="card_item" style="height: 125px;">
+    <div id="mybooks-section" style="height: 430px;">
+        <div class="mybooks_item" style="border: 3px black;">
             <a href="/mybooks/" class="book_link">
                 <div class="item_title">
-                    My Books
+                    {{ user.username }} Books Collection
                     <br>
                     <hr style="border-color: white;">
                     <p class="item_text">See the books that you have bookmarked before in here!</p>
+                    
+                    <div id="bookmark_list">
+                        {% for book in bookmarked %}
+                        <div class="image-container">
+                            <img src="{{book.image_url}}"/>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                </a>
+            </a>
         </div>
     </div>
     {% endif %}
