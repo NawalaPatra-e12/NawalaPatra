@@ -22,4 +22,14 @@ class Migration(migrations.Migration):
                 ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
+        migrations.CreateModel(
+            name='Reply',
+            fields=[
+            ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+            ('text', models.TextField()), 
+            ('discussion', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='forum.Discussion')), 
+            ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ('date', models.DateField(null=True))
+            ],
+        ),
     ]

@@ -6,3 +6,9 @@ class Discussion(models.Model):
     date = models.DateField(null=True)
     description = models.TextField()
 
+class Reply(models.Model):
+    discussion = models.ForeignKey(Discussion, on_delete=models.CASCADE, related_name='replies')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
