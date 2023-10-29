@@ -4,13 +4,16 @@
 
 {% block title %}Writer's Jam{% endblock title %}
 
+{% block meta %}
+<link rel="stylesheet" href="{% static 'css/writers.css' %}">
+{% endblock meta %}
+
 <!-- {% block script %} 
 <script type="text/javascript" src="{% static 'js/writers.js' %}"></script>
 {% endblock script %} -->
 
 {% block content %}
 <div class="content">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/writers.css' %}">
 
     <h1 id="app-title">Writer's Jam</h1>
     

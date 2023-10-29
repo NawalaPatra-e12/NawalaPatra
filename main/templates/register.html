@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -13,39 +15,41 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <title>Register</title>
+        <link rel="stylesheet" href="{% static 'css/login_register.css' %}">
 
     </head>
 
     <body>
-        <div class="container-fluid">
-            <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
-                <div class="col-md-6">
-                    <div>
-                        <h1>Register</h1>
-                        <p>Have you registered yet?</p>
-                    </div>
-                    <form method="POST">
-                        {% csrf_token %}
-                        <table>  
-                            {{ form.as_table }}  
-                            <tr>  
-                                <td></td>
-                                <td><input type="submit" name="submit" value="Daftar"/></td>  
-                            </tr>  
-                        </table>
-                    </form>
-                    
-                    {% if messages %}
-                        <ul>
-                            {% for message in messages %}
-                                <li>{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-        
-                    <br/>
+
+        <div class="book-bg">
+
+            <div class="floating-sqr">
+                <div>
+                    <h1>Register</h1>
+                    <p>Have you registered yet?</p>
                 </div>
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            {{ field.errors }} {{ field.label_tag }} <br/> {{ field }}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary">Daftar</button>
+                </form>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+
+                <br/>
+
+                <p>Already have an account? <a class="reg-links" href="{% url 'main:login' %}">Login Now</a></p>
             </div>
+            
         </div>
     </body>
 </html>
