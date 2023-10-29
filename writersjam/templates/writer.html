@@ -6,11 +6,8 @@
 
 {% block meta %}
 <link rel="stylesheet" href="{% static 'css/writers.css' %}">
+<script src="{% static 'js/writers.js' %}"></script>
 {% endblock meta %}
-
-<!-- {% block script %} 
-<script type="text/javascript" src="{% static 'js/writers.js' %}"></script>
-{% endblock script %} -->
 
 {% block content %}
 <div class="content">
@@ -28,7 +25,7 @@
             <p style="text-align: center; padding-top: 10px;">Do you want to participate? click the button below to submit your story now!</p>
             {% if user.is_authenticated %}
             <div id="buttonAddStory">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add Story submission</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;" id="submit_button">Add Story submission</button>
             </div>
             {% else %}
                 <p style="text-align: center;">Don't see the button? Please <a href="/login">login</a> first to join the fun!</p>
@@ -87,8 +84,8 @@
                                 <textarea class="form-control" id="story" name="story"></textarea>
                             </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
-                            <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black; background-color: white; border-radius: 30px;">Close</button>
+                            <button id="submit_story" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black; background-color: white; border-radius: 30px;">Submit</button>
                         </div>
                         </form>
                     </div>
