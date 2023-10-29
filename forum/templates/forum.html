@@ -77,16 +77,9 @@
     </div>
     
     <div class="content">
-        <table>
-            {% for discussion in data %}
-                <tr>
-                    <td>{{discussion.description}}</td>
-                </tr>
-            {% endfor %}
-        </table>
-    
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
-           
+        <div id="discussion-submission"></div>
+ 
     </div>
     
     <div>
@@ -125,15 +118,13 @@
     async function refreshPage() {
         document.getElementById("discussion-submission").innerHTML=""
         let htmlstring = ``
-        const discussion = await getDiscussion()
-        discussion.forEach((submit) => {
+        const description = await getDiscussion()
+        description.forEach((submit) => {
             htmlstring += `\n
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <div id="discussion-title">
-                            <h5 class="card-text">by ${submit.fields.user.username}</h5>
-                        </div>
+                
                         <div>
                             <p class="card-text">${submit.fields.description}</p>
                         </div>
