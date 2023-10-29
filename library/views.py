@@ -24,7 +24,6 @@ def show_library(request):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
-
     }
 
     return render(request, "library.html", context)
