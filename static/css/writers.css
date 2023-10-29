@@ -67,7 +67,10 @@
     height: auto;
     object-fit: cover;
 }
-
+#submit_button{
+    background-color: white;
+    border-radius: 30px;
+}
 .col-md-4{
     display: flex;
     justify-content: center;
@@ -96,5 +99,5 @@ hr {
     border-radius: 20px;
 }
 #book_card{
-    width: 350px;
+    width: 23vw;
 }
