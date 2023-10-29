@@ -4,4 +4,4 @@ from forum.models import Discussion
 class DiscussionForm(ModelForm):
     class Meta:
         model = Discussion
-        fields = ["user","username","description","date"]
+        fields = ["user","description","date"]

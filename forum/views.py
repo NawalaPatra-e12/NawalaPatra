@@ -50,9 +50,8 @@ def submit_discussion_ajax(request):
         description = request.POST.get("description")
         date = datetime.datetime.now()
         user = request.user
-        username = request.user.username
 
-        new_discussion = Discussion(description=description, date=date, user=user, username=username)
+        new_discussion = Discussion(description=description, date=date, user=user)
         new_discussion.save()
 
         return HttpResponse(b"CREATED", status=201)
