@@ -51,6 +51,7 @@ def submit_discussion_ajax(request):
         date = datetime.datetime.now()
         user = request.user
 
+
         new_discussion = Discussion(description=description, date=date, user=user)
         new_discussion.save()
 
