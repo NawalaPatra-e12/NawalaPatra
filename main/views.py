@@ -21,8 +21,8 @@ def show_main(request):
     }
     return render(request, "main.html", context)
 
-# def show_main(request):
-#     return render(request, "main.html")
+def show_main(request):
+    return render(request, "main.html")
 
 # def show_library(request):
 #     return render(request, show_library)

@@ -110,13 +110,11 @@ def submit_story_ajax(request):
     if request.method == 'POST':
         title = request.POST.get("title")
         story = request.POST.get("story")
-        # anonymous = request.POST.get("anonymous") == 'true'
         date = datetime.datetime.now()
 
         # buat username
         user = request.user
         username = request.user.username
-        # username = 'Anonymous' if anonymous else request.user.username
         
         current_week = datetime.date.today().isocalendar()[1]
         prompt = Prompt.objects.get(week=current_week)
