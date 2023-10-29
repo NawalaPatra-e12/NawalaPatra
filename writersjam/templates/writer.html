@@ -1,98 +1,15 @@
 {% extends 'base.html' %}
+
+{% load static %}
+
+<!-- {% block script %} 
+<script type="text/javascript" src="{% static 'js/writers.js' %}"></script>
+{% endblock script %} -->
+
 {% block content %}
-
-<style>
-    #app-title {
-        font-family: 'Kidstock';
-        font-weight: bold;
-        color: #011627ff;
-        font-size: 8vh;
-        margin-bottom: 4vh;
-    }
-    .float-main{
-        padding-top: 10px;
-    }
-    #prompt {
-        background-color: #011627ff;
-        color: white;
-        padding: 40px;
-        border-radius: 20px;
-        text-align: center;
-    }
-    #submission{
-        width: 69%;
-        float: left;
-        padding: 5px;
-        border-radius: 5px;
-        background-color: #ff9f1cff;
-    }
-    #reference{
-        width: 30%;
-        float: right;
-        padding: 5px;
-        border-radius: 5px;
-        background-color: #2ec4b6ff;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    #reference .card-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .card{
-        background-color: beige;
-        width: auto;
-        height: auto;
-        box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
-        border-radius: 10px;
-        margin: 10px;
-        padding-left: 10px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    .btn{
-        background-color: white;
-        border-radius: 20px;
-    }
-    .image-container {
-        width: 100px;  /* Set your desired width */
-        height: 150px; /* Set your desired height */
-        overflow: hidden;
-        display: flex;
-        border-radius: 10px;
-    }
-    .image-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-    .col-md-4{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #buttonAddStory{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    #story-title{
-        text-align: center;
-    }
-    #story-body{
-        padding-top: 10px;
-    }
-    #story-create-date{
-        font-size: 2px;
-    }
-    hr {
-        border: 1px solid black;
-    }
-</style>
-
 <div class="content">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/writers.css' %}">
+
     <h1 id="app-title">Writer's Jam</h1>
     
     <div id="prompt">
@@ -114,11 +31,18 @@
             <div id="story-submission"></div>
         </div>
         <div id="reference">
-            <h3 style="padding-top: 10px;">Book reference </h3>
+            <h3 style="padding-top: 10px;">Weekly Book Reference </h3>
             <p style="padding: 10px; text-align: justify;">Here are some books you can use as a reference to add a lil spice to your imagination! Interested in some of it? might wanna bookmarked it in the <a href="/library/">Library</a> :></p>
+
+            <a class="nav-link dropdown-toggle" href="#" id="genre" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Book recommendation choice</a>
+            <div class="dropdown-menu" aria-labelledby="Story recommendation choice">
+                <a class="dropdown-item" href="{% url 'writersjam:show_story' %}">All Books</a>
+                <a class="dropdown-item" href="{% url 'writersjam:filter_genre' %}">Books recomended for this theme!</a>
+            </div>
+
             {% for book in books %}
             <div class="card-container">
-                <div class="card">
+                <div class="card" id="book_card">
                     <div class="row no-gutters">
                         <div class="col-md-4">
                             <div class="image-container">
@@ -204,7 +128,7 @@
         document.getElementById("story-submission").innerHTML = htmlstring
     }
 
-    refreshPage()
+    refreshPage();
 
     function addStory() {
         fetch("{% url 'writersjam:submit_story_ajax' %}", {
@@ -217,7 +141,5 @@
     }
 
     document.getElementById("submit_story").onclick = addStory
-
-
 </script>
 {% endblock content %}
