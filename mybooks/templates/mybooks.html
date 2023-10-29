@@ -1,59 +1,12 @@
 {% extends 'base.html' %}
+{% load static %}
+
 
 {% block title %}My Books{% endblock title %}
 
 {% block meta %}
-<style>
-    .image-container {
-        width: 100px;  /* Set your desired width */
-        height: 150px; /* Set your desired height */
-        overflow: hidden;
-    }
-
-    .image-container img {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
-    #app-title {
-        font-family: 'Kidstock';
-        font-weight: bold;
-        color: #011627ff;
-        font-size: 8vh;
-        margin-bottom: 4vh;
-    }
-    .filter-links {
-        padding-right: 1vw;
-    }
-    .grid-container {
-        display: grid;
-        grid-template-columns: 0.5fr 4fr;
-        grid-gap: 24px;
-    }
-    .btn-primary {
-        background-color: #2ec4b6ff !important;
-        border-color: #2ec4b6ff !important;
-    }
-    .filter-links {
-        color: #e71d36ff;
-        background-color: transparent;
-        text-align: left;
-        border-color: transparent;
-    }
-    .filter-links:hover {
-        color: #bd1429;
-        text-decoration: none;
-        font-size: large;
-        font-weight: bold;
-    }
-    .review-container {
-        text-align: justify;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-</style>
+<link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/mybooks.css' %}" />
 {% endblock meta %}
 
 {% block content %}
@@ -128,18 +81,13 @@
     </div>
 
 </div>
-        
+
+
 <script>
     let pkReview = 0
     let indexFilter = 0
 
     async function getBookmarks(filter) {
-        // console.log(indexFilter)
-        // fetch(`/mybooks/get_bookmark_json/`, {
-        //     method: "GET",
-        //     body: new FormData(indexFilter)
-        // })
-        // ${indexFilter}/
         return fetch(`/mybooks/get_bookmark_json/?category_filter=${filter}`).then((res) => res.json())
     }
     async function refreshBookmarks() {
@@ -207,11 +155,8 @@
 
     function updateFilter(newIndex) {
         indexFilter = newIndex
-        console.log(indexFilter)
         refreshBookmarks()
     }
-
-
 </script>
 
 
