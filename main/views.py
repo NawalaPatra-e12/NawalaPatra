@@ -17,7 +17,7 @@ def show_main(request):
         user_profile = request.user
         bookmarked = Bookmark.objects.filter(user=user_profile)
         bookmarked_books = []
-        counter = 0;
+        counter = 0
         for bookmark in bookmarked:
             book = {
                     "title": bookmark.book.title,  
@@ -34,6 +34,7 @@ def show_main(request):
         context = {
             'bookmarked' : bookmarked_books,
         }
+
         return render(request, "main.html", context)
     else:
         return render(request, "main.html")
