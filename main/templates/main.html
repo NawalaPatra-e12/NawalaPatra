@@ -68,24 +68,26 @@
     </div> 
 
     {% if user.is_authenticated %}
-    <div id="mybooks-section" style="height: 430px; background-color: #121212; border-radius: 30px;">
-        <div class="mybooks_item" style="border: 3px black;">
-            <a href="/mybooks/" class="book_link">
-                <div class="item_title">
-                    {{ user.username }} Books Collection
-                    <br>
-                    <hr style="border-color: white;">
-                    <p class="item_text">See the books that you have bookmarked before in here!</p>
-                    
-                    <div id="bookmark_list">
-                        {% for book in bookmarked %}
-                        <div class="image-container">
-                            <img src="{{book.image_url}}"/>
+    <div style="display: flex; justify-content: center; align-items: center;">
+        <div id="mybooks-section" style="height: 430px; background-color: #121212; border-radius: 30px; width: 90%; " >
+            <div class="mybooks_item" style="border: 3px black;">
+                <a href="/mybooks/" class="book_link">
+                    <div class="item_title">
+                        {{ user.username }} Books Collection
+                        <br>
+                        <hr style="border-color: white;">
+                        <p class="item_text">See the books that you have bookmarked before in here!</p>
+                        
+                        <div id="bookmark_list">
+                            {% for book in bookmarked %}
+                            <div class="image-container">
+                                <img src="{{book.image_url}}"/>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
     </div>
     {% endif %}
