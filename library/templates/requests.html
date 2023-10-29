@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
+<link rel="stylesheet" href="{% static 'css/library.css' %}" />
+{% endblock meta %}
 
 {% block content %}
 
 <div class="content">
+
+    <h3 id="app-title">Library Requests</h3>
+
     <p style="font-weight: bold;">Got a Book Request?</p>
     <p>
         We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!

@@ -28,6 +28,7 @@ def show_library(request):
 
     return render(request, "library.html", context)
 
+@login_required(login_url='/login/')
 def show_requests(request):
     data = Request.objects.all()
     
