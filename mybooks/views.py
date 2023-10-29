@@ -7,13 +7,6 @@ from .models import Bookmark
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 
-
-@login_required(login_url='/login/')
-def show_mybooks(request):
-    user_profile = request.user
-    bookmark = Bookmark.objects.filter(user=user_profile)
-    return render(request, 'mybooks.html', {'bookmarked_books': bookmark})
-
 CATEGORIES_NUM = [
     (1, "Literature & Fiction"),
     (2, "Mystery, Thriller & Suspense"),
@@ -21,6 +14,16 @@ CATEGORIES_NUM = [
     (4, "Romance"),
     (5, "Science Fiction & Fantasy"),
 ]
+
+@login_required(login_url='/login/')
+def show_mybooks(request):
+    user_profile = request.user
+    bookmark = Bookmark.objects.filter(user=user_profile)
+    context = {
+        'bookmarked_books': bookmark,
+        'categories' : CATEGORIES_NUM,
+    }
+    return render(request, 'mybooks.html', context)
 
 def filter_category(request, id):
     categories = dict(CATEGORIES_NUM)
@@ -30,7 +33,7 @@ def filter_category(request, id):
 
     for bookmark in bookmarked_books:
         if bookmark.book.category == categories.get(id):
-            data.append(bookmark.book)
+            data.append(bookmark)
 
     context = {
         'products': data,
@@ -42,21 +45,39 @@ def filter_category(request, id):
 def get_bookmark_json(request):
     user_profile = request.user
     bookmarked_books = Bookmark.objects.filter(user=user_profile)
+    category_filter = request.GET.get('category_filter')
     arr = []
+    categories = dict(CATEGORIES_NUM)
     for bookmark in bookmarked_books:
-        obj_bookmark = {
-            "pk":bookmark.pk, 
-            "user":bookmark.user.pk, 
+        if bookmark.book.category == categories.get(int(category_filter)):
+            obj_bookmark = {
+                "pk": bookmark.pk,
+                "user": bookmark.user.pk,
+                "book": {
+                    "title": bookmark.book.title,
+                    "author": bookmark.book.author,
+                    "category": bookmark.book.category,
+                    "image_url": bookmark.book.image_url,
+                    "rate": bookmark.book.rate,
+                },
+                "review": bookmark.review,
+            }
+            arr.append(obj_bookmark)
+        elif int(category_filter) == 0:
+            obj_bookmark = {
+            "pk": bookmark.pk,
+            "user": bookmark.user.pk,
             "book": {
-                "title": bookmark.book.title,  
-                "author": bookmark.book.author,  
-                "category": bookmark.book.category,  
+                "title": bookmark.book.title,
+                "author": bookmark.book.author,
+                "category": bookmark.book.category,
                 "image_url": bookmark.book.image_url,
                 "rate": bookmark.book.rate,
             },
-            "review":bookmark.review}
-        arr.append(obj_bookmark)
-    # return HttpResponse(serializers.serialize("json", arr), content_type="application/json")
+            "review": bookmark.review,
+            }
+            arr.append(obj_bookmark)
+
     return JsonResponse({"result":arr})
 
 def show_xml(request):
@@ -92,107 +113,13 @@ def remove_bookmark(request):
 def add_review_ajax(request, id):
     if request.method == 'POST':
         review = request.POST.get("review")
-        print(review)
         bookmark = Bookmark.objects.get(pk=id)
         bookmark.review = review
         bookmark.save()
-        print(bookmark.review)
-
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
 
 
-# Create your views here.
-# def show_mybooks(request):
 
-#     return render(request, "mybooks.html")
-
-# def show_mybooks(request):
-#     # nge get user
-#     # get bookmark dari user itu
-#     user_profile = request.user.userprofile
-#     # bookmark = Bookmark.objects.all()
-#     bookmarked_books = user_profile.bookmarked_books.all()
-#     context = {
-#         'bookmarked_books' : bookmarked_books
-#     }
-
-#     # return HttpResponse(serializers.serialize('json', bookmark), content_type='application/json')
-#     return render(request, 'mybooks.html', context)
-
-
-# @login_required(login_url='/login/')
-# def show_mybooks(request):
-#     return render(request, 'mybooks.html')
-
-# def get_bookmark_json(request):
-#     print(request)
-#     if request.method == 'GET':
-#         print("masuk")
-#         user_profile = request.user.userprofile
-#         bookmarked_books = user_profile.bookmarked_books.all()
-#         book_data = [
-#             {
-#                 'title': book.title,
-#                 'author': book.author,
-#                 'category': book.category,
-#                 'image_url': book.image_url,
-#             }
-#             for book in bookmarked_books
-#         ]
-#         print(book_data)
-#         return JsonResponse({'bookmarked_books': book_data})
-
-# @login_required(login_url='/login/')
-# def show_mybooks(request):
-#     print(request)
-#     if request == 'GET':
-#         print("masuk")
-#         user_profile = request.user.userprofile
-#         bookmarked_books = user_profile.bookmarked_books.all()
-#         book_data = [{'title': book.title, 'author': book.author, 'category': book.category} for book in bookmarked_books]
-#         return HttpResponse(serializers.serialize('json', bookmarked_books))
-#         # return JsonResponse({'bookmarked_books': book_data})
-
-#     return render(request, 'mybooks.html')
-
-# def get_bookmark_json(request):
-#     user_profile = request.user.userprofile
-#     bookmarked_books = user_profile.bookmarked_books.all()
-#     return HttpResponse(serializers.serialize('json', bookmarked_books))
-
-# def delete_bookmark_ajax(request):
-#     if request.method == 'DELETE':
-#         raw_body_decoded = request.body.decode("utf-8")
-#         data = json.loads(raw_body_decoded)
-#         user_profile = request.user.userprofile
-#         bookmark_book = user_profile
-
-
-#     return HttpResponse(b"OK", status = 200)
-
-
-# @login_required(login_url='/login/')
-# def show_mybooks(request):
-#     user_profile = request.user.userprofile
-#     bookmarked_books = user_profile.bookmarked_books.all()
-#     return render(request, 'mybooks.html', {'bookmarked_books': bookmarked_books})
-
-
-
-
-    # if request.method == 'GET':
-    #     user_profile = request.user.userprofile
-    #     bookmarked_books = user_profile.bookmarked_books.all()
-    #     book_data = [
-    #         {
-    #             'title': book.title,
-    #             'author': book.author,
-    #             'category': book.category,
-    #             'image_url': book.image_url,
-    #         }
-    #         for book in bookmarked_books
-    #     ]
-    #     return HttpResponse(serializers.serialize('json', bookmarked_books))
 

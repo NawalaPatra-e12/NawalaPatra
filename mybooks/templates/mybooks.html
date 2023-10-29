@@ -27,7 +27,7 @@
     }
     .grid-container {
         display: grid;
-        grid-template-columns: 0.5fr 4fr 1fr;
+        grid-template-columns: 0.5fr 4fr;
         grid-gap: 24px;
     }
     .btn-primary {
@@ -36,6 +36,9 @@
     }
     .filter-links {
         color: #e71d36ff;
+        background-color: transparent;
+        text-align: left;
+        border-color: transparent;
     }
     .filter-links:hover {
         color: #bd1429;
@@ -43,6 +46,13 @@
         font-size: large;
         font-weight: bold;
     }
+    .review-container {
+        text-align: justify;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
 </style>
 {% endblock meta %}
 
@@ -56,16 +66,16 @@
             <div class="filters">
                 <p style="font-weight: bold;">Sort by Genre</p>
         
-                <a class="filter-links" href="/mybooks/">
+                <button class="filter-links" onclick="updateFilter(0)">
                     All
-                </a>
+                </button>
                 <br/>
                 <br/>
 
                 {% for category in categories %}
-                <a class="filter-links" href="{% url 'mybooks:filter_category' category.0 %}>
+                <button class="filter-links" onclick="updateFilter({{ category.0 }})">
                     {{ category.1 }}
-                </a>
+                </button>
                 <br/>
                 <br/>
                 {% endfor %}
@@ -82,7 +92,7 @@
                         <th scope="col">Title</th>
                         <th scope="col">Author</th>
                         <th scope="col">Category</th>
-                        <th scope="col">Review</th>
+                        <th scope="col">Personal Review</th>
                         <th scope="col">Remove</th>
                 </thead>
                 <tbody id="table_content"></tbody> 
@@ -104,7 +114,7 @@
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="review" class="col-form-label">Review:</label>
-                            <textarea class="form-control" id="review" name="review" rows=5></textarea>
+                            <textarea class="form-control" id="review" name="review" rows=15></textarea>
                         </div>
                     </form>
 
@@ -121,13 +131,20 @@
         
 <script>
     let pkReview = 0
+    let indexFilter = 0
 
-    async function getBookmarks() {
-        return fetch("{% url 'mybooks:get_bookmark_json' %}").then((res) => res.json())
+    async function getBookmarks(filter) {
+        // console.log(indexFilter)
+        // fetch(`/mybooks/get_bookmark_json/`, {
+        //     method: "GET",
+        //     body: new FormData(indexFilter)
+        // })
+        // ${indexFilter}/
+        return fetch(`/mybooks/get_bookmark_json/?category_filter=${filter}`).then((res) => res.json())
     }
     async function refreshBookmarks() {
         document.getElementById("table_content").innerHTML = "";
-        const products = await getBookmarks();
+        const products = await getBookmarks(indexFilter);
         let htmlString = "";
         products.result.forEach((bookmark, index) => {
             const reviewContent = bookmark.review ? `<p>${bookmark.review}</p>` : '';
@@ -143,11 +160,11 @@
                     <td>${bookmark.book.author}</td>
                     <td>${bookmark.book.category}</td>
                     <td>
-                        ${reviewContent}
-                        <div>
-                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="updatePkReview(${bookmark.pk})">
-                                ${bookmark.review ? 'Edit' : 'Review'}
-                            </button>
+                        <div class="review-container">
+                            ${reviewContent}
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="updatePkReview(${bookmark.pk}, '${bookmark.review}')">
+                                    ${bookmark.review ? 'Edit' : 'Review'}
+                                </button>
                         </div>
                     </td>
                     <td>
@@ -178,9 +195,23 @@
     }
     document.getElementById("button_add").onclick = addReview
 
-    function updatePkReview(newPk) {
-        pkReview = newPk; 
+    function updatePkReview(newPk, reviewContent) {
+        pkReview = newPk;
+        const reviewTextarea = document.getElementById("review");
+        if (reviewContent) {
+            reviewTextarea.value = reviewContent;
+        } else {
+            reviewTextarea.value = ""; 
+        }
     }
+
+    function updateFilter(newIndex) {
+        indexFilter = newIndex
+        console.log(indexFilter)
+        refreshBookmarks()
+    }
+
+
 </script>
 
 
