@@ -8,18 +8,35 @@ import datetime
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
-from .models import UserProfile
+from mybooks.models import Bookmark
 
 
 # Create your views here.
 def show_main(request):
-    user_profile = request.user.userprofile
-    bookmarked_books = user_profile.bookmarked_books.all()[:5]
+    if request.user.is_authenticated:
+        user_profile = request.user
+        bookmarked = Bookmark.objects.filter(user=user_profile)
+        bookmarked_books = []
+        counter = 0;
+        for bookmark in bookmarked:
+            book = {
+                    "title": bookmark.book.title,  
+                    "author": bookmark.book.author,  
+                    "category": bookmark.book.category,  
+                    "image_url": bookmark.book.image_url,
+                    "rate": bookmark.book.rate,
+                    }
+            bookmarked_books.append(book)
+            counter += 1
+            if counter == 5:
+                break
 
-    context = {
-        'bookmarked' : bookmarked_books,
-    }
-    return render(request, "main.html", context)
+        context = {
+            'bookmarked' : bookmarked_books,
+        }
+        return render(request, "main.html", context)
+    else:
+        return render(request, "main.html")
 
 # def show_main(request):
 #     return render(request, "main.html")

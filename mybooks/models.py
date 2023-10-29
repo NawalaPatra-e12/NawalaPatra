@@ -7,6 +7,6 @@ from library.models import Book
 class Bookmark(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    review = models.TextField(blank=True)
+    review = models.TextField(blank=True, max_length=1000)
 
 
