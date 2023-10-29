@@ -24,6 +24,7 @@ def show_library(request):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
+        'current_user_id': request.user.id,
     }
 
     return render(request, "library.html", context)
@@ -34,6 +35,7 @@ def show_requests(request):
     
     context = {
         'products': data,
+        'current_user_id': request.user.id,
     }
 
     return render(request, "requests.html", context)
@@ -120,4 +122,13 @@ def add_request_ajax(request):
 
         return HttpResponse(b"CREATED", status=201)
 
+    return HttpResponseNotFound()
+
+@csrf_exempt
+def bookreq_delete(request, id):
+    bookreq = get_object_or_404(Request, id=id)
+    if request.method == 'POST':
+        bookreq.delete()
+
+        return HttpResponse(b"DELETED", status=204)
     return HttpResponseNotFound()

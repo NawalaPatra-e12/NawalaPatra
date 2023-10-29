@@ -66,8 +66,12 @@
     color: #011627ff !important;
 }
 
-.u-name {
+.orange-text {
     color: #e88600;
+}
+
+.green-text {
+    color: #249b90;
 }
 
 .filter-links {
@@ -79,4 +83,8 @@
     text-decoration: none;
     font-size: large;
     font-weight: bold;
+}
+
+.invisible {
+    display: none;
 }
