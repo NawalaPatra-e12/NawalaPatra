@@ -5,6 +5,7 @@
     font-size: 8vh;
     margin-bottom: 4vh;
 }
+
 .float-main{
     padding-top: 10px;
 }
@@ -48,10 +49,12 @@
     padding-top: 10px;
     padding-bottom: 10px;
 }
-.btn{
+
+/* .bbtn {
     background-color: white;
     border-radius: 20px;
-}
+} */
+
 .image-container {
     width: 100px;  /* Set your desired width */
     height: 150px; /* Set your desired height */
@@ -63,6 +66,10 @@
     width: 100%;
     height: auto;
     object-fit: cover;
+}
+#submit_button{
+    background-color: white;
+    border-radius: 30px;
 }
 .col-md-4{
     display: flex;
@@ -92,5 +99,5 @@ hr {
     border-radius: 20px;
 }
 #book_card{
-    width: 350px;
+    width: 23vw;
 }
