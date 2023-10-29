@@ -19,11 +19,11 @@ GENRES_NUM = [
 ]
 
 THEME_NUM = [
-    (1, "Another world fantasy"),
-    (2, "Haloween horror time"),
+    (1, "Write a story about a small town librarian who discovers a secret message hidden in the margins of an old book."),
+    (2, "A renowned detective receives an anonymous letter containing a series of cryptic clues during haloween."),
     (3, "About a mysterious ritual"),
-    (4, "Mafia Romance"),
-    (5, "Abnormal dimension gate"),
+    (4, "A secret relationship between a mafia boss and a daughter of a noble family"),
+    (5, "Abnormal dimension gate appears out of nowhere are letting out mysterious monster and now normal humans have super power."),
 ]
 
 def show_story(request):
@@ -43,16 +43,32 @@ def show_story(request):
         prompt = Prompt.objects.create(theme=theme, week=current_week, genre=genre)
 
     story_data = Submission.objects.filter(prompt=prompt) 
-    # my_story = Submission.objects.filter(user=request.user)
 
-    # jadi bakal ambil buku sesuai genre dari prompt
-    book_rec = Book.objects.filter(category = prompt.genre)
+    book_rec = Book.objects.all()
 
     context = {
         'story' : story_data,
         'prompt' : prompt,
         'books' : book_rec,
-        # 'my_story' : my_story,
+    }
+    return render(request, "writer.html", context)
+
+def filter_genre(request):
+    current_week = datetime.date.today().isocalendar()[1]
+
+    # genre dan theme prompt sesuai week
+    prompt_num = current_week % 5
+    if prompt_num == 0:
+        prompt_num = 5
+    theme = THEME_NUM[prompt_num - 1][1]
+    genre = GENRES_NUM[prompt_num - 1][1]
+
+    prompt = Prompt.objects.get(week=current_week)
+    book_genre = Book.objects.filter(category = genre)
+
+    context = {
+        'books' : book_genre,
+        'prompt' : prompt,
     }
     return render(request, "writer.html", context)
 
@@ -83,10 +99,9 @@ def delete_story(request, id):
     return HttpResponseRedirect(reverse('writersjam:show_story'))
 
 def get_story_json(request):
-    # current_week = datetime.date.today().isocalendar()[1]
-    # prompt = Prompt.objects.get(week=current_week)
-    # story = Submission.objects.filter(prompt=prompt)
-    story = Submission.objects.all()
+    current_week = datetime.date.today().isocalendar()[1]
+    prompt = Prompt.objects.get(week=current_week)
+    story = Submission.objects.filter(prompt=prompt)
     return HttpResponse(serializers.serialize('json', story))
 
 @login_required(login_url='/login/')
@@ -95,11 +110,13 @@ def submit_story_ajax(request):
     if request.method == 'POST':
         title = request.POST.get("title")
         story = request.POST.get("story")
+        # anonymous = request.POST.get("anonymous") == 'true'
         date = datetime.datetime.now()
 
         # buat username
         user = request.user
         username = request.user.username
+        # username = 'Anonymous' if anonymous else request.user.username
         
         current_week = datetime.date.today().isocalendar()[1]
         prompt = Prompt.objects.get(week=current_week)
