@@ -9,6 +9,96 @@
             font-size: 8vh;
             margin: 4vh;
         }
+        #card_container{
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .card_box {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 50px 0;
+        }
+        .card_item{
+            flex-basis: calc(25% - 30px);
+            margin: 0 15px 0px;
+            overflow: hidden;
+            border-radius: 30px;
+            min-height: 150px;
+            background-color: #121212;
+        }
+        .item_link{
+            display: block;
+            text-align: center;
+            background-color: #121212;
+            position: relative;
+        }
+        .item_link:hover,
+        .item_link:hover .item_link {
+            text-decoration: none;
+            color: black;
+        }
+        .item_link:hover .book_link{
+            text-decoration: none;
+        }
+        .item_link:hover .item_bg {
+            -webkit-transform: scale(10);
+            -ms-transform: scale(10);
+            transform: scale(10);
+        }
+        .item_title{
+            min-height: 100px;
+            margin: 0 0 25px;
+            overflow: hidden;
+            font-weight: bold;
+            font-size: 30px;
+            color: #FFF;
+            z-index: 2;
+            position: relative;
+            padding-top: 20px;
+            padding-bottom: 0px;
+        }
+        .item_bg{
+            height: 128px;
+            width: 128px;
+            background-color: #2ec4b6ff;
+            z-index: 1;
+            position: absolute;
+            top: -75px;
+            right: -75px;
+            border-radius: 50%;
+            -webkit-transition: all .5s ease;
+            -o-transition: all .5s ease;
+            transition: all .5s ease;
+        }
+        .leaderboard{
+            background-color: #f9b234;
+        }
+        .forum{
+            background-color: #e71d36ff;
+        }
+        .Writersjam{
+            background-color: #011627ff;
+        }
+        .item_text{
+            font-size: small;
+            text-decoration: none;
+            color: white;
+            padding: 10px;
+            font-weight: 0;
+        }
+        p{
+            font-weight: lighter;
+        }
+        .book_link{
+            display: block;
+            text-align: center;
+            position: relative;
+        }
     </style>
 {% endblock meta %}
 
@@ -16,8 +106,77 @@
 
 <div class="content">
     <center>
-        <h1 id="app-title">Hello!</h1>
+        <h1 id="app-title">Welcome to NawalaPatra!</h1>
+        <p>Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
     </center>
+
+    <div id="card_container">
+        <div class="card_box">
+            <div class="card_item">
+                <a href="/library/" class="item_link">
+                <div class="item_bg"></div>
+                <div class="item_title">
+                    Library
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Discover variety of books around the world along with us</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/leaderboard/" class="item_link">
+                <div class="item_bg leaderboard"></div>
+                <div class="item_title">
+                    Leaderboard
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Don't know what book to read? Find out the most loved book in here</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/forum/" class="item_link">
+                <div class="item_bg forum"></div>
+                <div class="item_title">
+                    Forum
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Wanna have a fun conversation among your kind? Come and join our community discussion</p>
+                </div>
+                </a>
+            </div>
+        
+            <div class="card_item">
+                <a href="/writersjam/" class="item_link">
+                <div class="item_bg writersjam"></div>
+                <div class="item_title">
+                    Writer's Jam
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">Don't know where to put your imagination to? Don't worry, we have a special place to submit your own story</p>
+                </div>
+                </a>
+            </div>
+        </div>
+    </div> 
+
+    {% if user.is_authenticated %}
+    <div id="mybooks-section" style="height: 150px;">
+        <div class="card_item" style="height: 125px;">
+            <a href="/mybooks/" class="book_link">
+                <div class="item_title">
+                    My Books
+                    <br>
+                    <hr style="border-color: white;">
+                    <p class="item_text">See the books that you have bookmarked before in here!</p>
+                </div>
+                </a>
+        </div>
+    </div>
+    {% endif %}
+
 </div>
 
 {% endblock content %}
