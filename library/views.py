@@ -134,7 +134,6 @@ def add_request_ajax(request):
         new_product.save()
 
         return HttpResponse(b"CREATED", status=201)
-
     return HttpResponseNotFound()
 
 @csrf_exempt
