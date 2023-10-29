@@ -6,6 +6,7 @@
 {% block meta %}
 <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
 <link rel="stylesheet" href="{% static 'css/library.css' %}" />
+<link rel="stylesheet" href="{% static 'css/leaderboard.css' %}" />
 {% endblock meta %}
 
 {% block content %}
@@ -20,7 +21,7 @@
     </p>
 
     {% if user.is_authenticated %}
-    <button type="button" class="btn btn-secondary btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Comment</button>
+    <button type="button" class="btn btn-comment" data-bs-toggle="modal" data-bs-target="#exampleModal">Comment</button>
     {% else %}
     <a href="/login/">
         Login now to Comment
