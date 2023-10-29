@@ -105,6 +105,9 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
                             <button id="submit_discussion" type="submit" class="btn btn-primary" data-bs-dismiss="modal" value="Submit" style="color: black;">Submit</button>
                         </div>
+
+                    
+
                         </form>
                     </div>
                 </div>
@@ -129,13 +132,15 @@
                 <div class="card">
                     <div class="card-body">
                         <div id="story-title" style="padding-top: 0px;">
-                            
-                            <p class="card-text" ; padding-top: 0px;">by ${submit.fields.user} - ${submit.fields.date}</p>
+                            <p class="card-text" style="font-weight: bold" padding-top: 0px;">Posted by ${submit.fields.user.username} on ${submit.fields.date}</p>
                             <hr>
                         </div>
                         <div>
                             <p class="card-text">${submit.fields.description}</p>
                         </div>
+
+                        
+                       
                     </div>
                 </div>
             </div>\n`

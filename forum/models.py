@@ -5,3 +5,4 @@ class Discussion(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     date = models.DateField(null=True)
     description = models.TextField()
+
