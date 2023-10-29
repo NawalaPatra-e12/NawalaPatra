@@ -1,0 +1,82 @@
+.image-container {
+    width: 100px;
+    height: 150px;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.filter-links {
+    padding-right: 1vw;
+}
+
+#app-title {
+    font-family: 'Kidstock';
+    font-weight: bold;
+    color: #011627ff;
+    font-size: 8vh;
+    margin-bottom: 4vh;
+}
+
+.filter-links {
+    margin-bottom: 4vh;
+}
+
+#bookRecs {
+    margin-top: 3vh;
+}
+
+.date-post {
+    text-align: right;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 0.5fr 4fr 1fr;
+    grid-gap: 24px;
+}
+
+.btn-outline-dark:hover {
+    background-color: #011627ff !important;
+}
+
+.btn-primary {
+    background-color: #2ec4b6ff !important;
+    border-color: #2ec4b6ff !important;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #249b90 !important;
+    border-color: #249b90 !important;
+}
+
+.btn-secondary {
+    background-color: #ff9f1cff !important;
+    border-color: #ff9f1cff !important;
+    color: #011627ff !important;
+}
+
+.btn-secondary:hover, .btn-secondary:active, .btn-secondary:visited {
+    background-color: #e88600 !important;
+    border-color: #e88600 !important;
+    color: #011627ff !important;
+}
+
+.u-name {
+    color: #e88600;
+}
+
+.filter-links {
+    color: #e71d36ff;
+}
+
+.filter-links:hover {
+    color: #bd1429;
+    text-decoration: none;
+    font-size: large;
+    font-weight: bold;
+}

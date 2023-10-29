@@ -28,6 +28,16 @@ def show_library(request):
 
     return render(request, "library.html", context)
 
+@login_required(login_url='/login/')
+def show_requests(request):
+    data = Request.objects.all()
+    
+    context = {
+        'products': data,
+    }
+
+    return render(request, "requests.html", context)
+
 # Function to search & filter books according to search term.
 def search_products(request):
     if request.method == "POST":

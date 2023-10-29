@@ -8,110 +8,27 @@
 
 {% block content %}
 
-
 <div class="content">
 
-    <h1 id="app-title">Library</h1>
+    <h3 id="app-title">Library Requests</h3>
 
-    <div class="grid-container">
+    <p style="font-weight: bold;">Got a Book Request?</p>
+    <p>
+        We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!
+    </p>
 
-        <div class="grid-child">
-            <div class="filters">
-                <p style="font-weight: bold;">Browse by Genre</p>
-        
-                <a class="filter-links" href="/library/">
-                    All
-                </a>
-                <br/>
-                <br/>
-
-            
-                {% for category in categories %}
-                <a class="filter-links" href="/library/filter/{{ category.0 }}/">
-                    {{ category.1 }}
-                </a>
-                <br/>
-                <br/>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="grid-child">
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Cover</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Author</th>
-                        <th scope="col">Category</th>
-                        {% if user.is_authenticated %}
-                        <th scope="col">Bookmark</th>
-                        {% endif %}
-                    </tr>
-                </thead>
-                
-                
-                <tbody>
-
-                    {% for product in products %}
-                    <tr>
-                        <th scope="row">{{forloop.counter}}</th>
-                        <td>
-                            <div class="image-container">
-                                <img src="{{product.image_url}}"/>
-                            </div>
-                        </td>
-                        <td>{{product.title}}</td>
-                        <td>{{product.author}}</td>
-                        <td>{{product.category}}</td>
-                        {% if user.is_authenticated %}
-                        <td>
-                            <form method="POST" action="{% url 'library:bookmark_book' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="book_id" value="{{product.id}}">
-                                <button type="submit" class="btn btn-primary">Bookmark</button>
-                            </form>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-
-                </tbody>
-                
-            </table>
-        </div>
-        
-        <div class="grid-child">
-            <div class="request-section">
-                <p style="font-weight: bold;">Got a Book Request?</p>
-                <p>
-                    We're always looking to expand our catalogue. If you know a book that you think we should add next, let us know!
-                </p>
-
-                {% if user.is_authenticated %}
-                <button type="button" class="btn btn-secondary btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
-                {% else %}
-                <a href="/login/">
-                    Login now to submit a request.
-                </a>
-                {% endif %}
-                <div id="bookRecs">
-                    <p style="font-weight: bold;">Recent Requests:</p>
-                    <div id="all_requests" class="inventory row row-cols-1 g-4"></div>
-                    <br/>
-
-                    {% if user.is_authenticated %}
-                    <a class="filter-links" href="/library/requests/">
-                        View All
-                    </a>
-                    {% endif %}
-                </div>
-
-            </div>
-        </div>
+    {% if user.is_authenticated %}
+    <button type="button" class="btn btn-secondary btn-small" data-bs-toggle="modal" data-bs-target="#exampleModal">Request A Book!</button>
+    {% else %}
+    <a href="/login/">
+        Login now to submit a request.
+    </a>
+    {% endif %}
+    <div id="bookRecs">
+        <p style="font-weight: bold;">All Requests:</p>
+        <div id="all_requests" class="inventory row row-cols-1 row-cols-md-3 g-4"></div>
     </div>
+
 
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -161,7 +78,6 @@
     async function refreshRequests() {
         document.getElementById("all_requests").innerHTML = ""
         const products = await getRequests()
-        let counter = 0;
 
         let htmlString = ``
         
@@ -184,9 +100,6 @@
                     </div>
                 </div>
             </div>\n`;
-
-            counter++;
-            if (counter >= 3) break;
         }
         
         document.getElementById("all_requests").innerHTML = htmlString
