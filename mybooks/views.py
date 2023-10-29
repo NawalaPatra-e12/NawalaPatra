@@ -3,10 +3,16 @@ from django.http import HttpResponse, HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from main.models import UserProfile, User
-from library.models import Book
 from .models import Bookmark
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
+
+
+@login_required(login_url='/login/')
+def show_mybooks(request):
+    user_profile = request.user
+    bookmark = Bookmark.objects.filter(user=user_profile)
+    return render(request, 'mybooks.html', {'bookmarked_books': bookmark})
 
 CATEGORIES_NUM = [
     (1, "Literature & Fiction"),
@@ -16,16 +22,15 @@ CATEGORIES_NUM = [
     (5, "Science Fiction & Fantasy"),
 ]
 
-@login_required(login_url='/login/')
-def show_mybooks(request):
-    user_profile = request.user.userprofile
-    bookmarked_books = user_profile.bookmarked_books.all()
-    return render(request, 'mybooks.html', {'bookmarked_books': bookmarked_books})
-
 def filter_category(request, id):
     categories = dict(CATEGORIES_NUM)
-    user_profile = request.user.userprofile
-    data = user_profile.bookmarked_book.filter(category=categories.get(id))
+    user_profile = request.user
+    bookmarked_books = Bookmark.objects.filter(user=user_profile)
+    data = []
+
+    for bookmark in bookmarked_books:
+        if bookmark.book.category == categories.get(id):
+            data.append(bookmark.book)
 
     context = {
         'products': data,
@@ -35,18 +40,43 @@ def filter_category(request, id):
     return render(request, "mybooks.html", context)
 
 def get_bookmark_json(request):
-    user_profile = request.user.userprofile
-    bookmarked_books = user_profile.bookmarked_books.all()
-    return HttpResponse(serializers.serialize('json', bookmarked_books))
+    user_profile = request.user
+    bookmarked_books = Bookmark.objects.filter(user=user_profile)
+    arr = []
+    for bookmark in bookmarked_books:
+        obj_bookmark = {
+            "pk":bookmark.pk, 
+            "user":bookmark.user.pk, 
+            "book": {
+                "title": bookmark.book.title,  
+                "author": bookmark.book.author,  
+                "category": bookmark.book.category,  
+                "image_url": bookmark.book.image_url,
+                "rate": bookmark.book.rate,
+            },
+            "review":bookmark.review}
+        arr.append(obj_bookmark)
+    # return HttpResponse(serializers.serialize("json", arr), content_type="application/json")
+    return JsonResponse({"result":arr})
 
 def show_xml(request):
-    user_profile = request.user.userprofile
-    data = user_profile.bookmarked_books.all()
+    user_profile = request.user
+    data = Bookmark.objects.filter(user=user_profile)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
 
 def show_json(request):
-    user_profile = request.user.userprofile
-    data = user_profile.bookmarked_books.all()
+    user_profile = request.user
+    data = Bookmark.objects.filter(user=user_profile)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def show_xml_by_id(request, id):
+    user_profile = request.user
+    data = Bookmark.objects.filter(user=user_profile)
+    return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+
+def show_json_by_id(request, id):
+    user_profile = request.user
+    data = Bookmark.objects.filter(user=user_profile)
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 @csrf_exempt
@@ -54,21 +84,23 @@ def remove_bookmark(request):
     if request.method == 'DELETE':
         raw_body_decoded = request.body.decode("utf-8")
         data = json.loads(raw_body_decoded)
-        bookmark_book = Book.objects.get(pk=data["id"])
-        user_profile = UserProfile.objects.get(user=request.user)
-        user_profile.bookmarked_books.remove(bookmark_book)
+        Bookmark.objects.get(pk=data["id"]).delete()
+
     return HttpResponse(b"OK", status = 200)
 
-# @csrf_exempt
-# def add_review_ajax(request):
-#     if request.method == 'POST':
-#         review= request.POST.get("review")
+@csrf_exempt
+def add_review_ajax(request, id):
+    if request.method == 'POST':
+        review = request.POST.get("review")
+        print(review)
+        bookmark = Bookmark.objects.get(pk=id)
+        bookmark.review = review
+        bookmark.save()
+        print(bookmark.review)
 
+        return HttpResponse(b"CREATED", status=201)
 
-
-#         return HttpResponse(b"CREATED", status=201)
-
-#     return HttpResponseNotFound()
+    return HttpResponseNotFound()
 
 
 # Create your views here.

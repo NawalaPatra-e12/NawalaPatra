@@ -35,7 +35,6 @@
     .filter-links {
         color: #e71d36ff;
     }
-
     .filter-links:hover {
         color: #bd1429;
         text-decoration: none;
@@ -61,9 +60,8 @@
                 <br/>
                 <br/>
 
-            
                 {% for category in categories %}
-                <a class="filter-links" href="/mybooks/filter/{{ category.0 }}/">
+                <a class="filter-links" href="{% url 'mybooks:filter_category' category.0 %}>
                     {{ category.1 }}
                 </a>
                 <br/>
@@ -91,48 +89,37 @@
         </div>
     </div>
 
-
-
-
-
-
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Review</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Personal Review</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="requestForm" onsubmit="return false;">
 
+                    <form id="formReview" onsubmit="return false;">
                         {% csrf_token %}
                         <div class="mb-3">
-                            <label for="book_title" class="col-form-label">Book Title:</label>
-                            <input type="text" class="form-control" id="book_title" name="book_title"></input>
+                            <label for="review" class="col-form-label">Review:</label>
+                            <textarea class="form-control" id="review" name="review" rows=5></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label for="book_author" class="col-form-label">Book Author:</label>
-                            <input type="text" class="form-control" id="book_author" name="book_author"></input>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reason" class="col-form-label">Reason for Request:</label>
-                            <textarea class="form-control" id="reason" name="reason"></textarea>
-                        </div>
-
                     </form>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Submit Request</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Submit</button>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 
 </div>
         
 <script>
+    let pkReview = 0
+
     async function getBookmarks() {
         return fetch("{% url 'mybooks:get_bookmark_json' %}").then((res) => res.json())
     }
@@ -140,24 +127,29 @@
         document.getElementById("table_content").innerHTML = "";
         const products = await getBookmarks();
         let htmlString = "";
-        console.log(products)
-        products.forEach((book, index) => {
+        products.result.forEach((bookmark, index) => {
+            const reviewContent = bookmark.review ? `<p>${bookmark.review}</p>` : '';
             htmlString += `
                 <tr>
                     <th scope="row">${index + 1}</th>
                     <td>
                         <div class="image-container">
-                            <img src="${book.fields.image_url}"/>
+                            <img src="${bookmark.book.image_url}"/>
                         </div>
                     </td>
-                    <td>${book.fields.title}</td>
-                    <td>${book.fields.author}</td>
-                    <td>${book.fields.category}</td>
+                    <td>${bookmark.book.title}</td>
+                    <td>${bookmark.book.author}</td>
+                    <td>${bookmark.book.category}</td>
                     <td>
-                        <button type="submit" class="btn btn-primary">Review</button>
+                        ${reviewContent}
+                        <div>
+                            <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="updatePkReview(${bookmark.pk})">
+                                ${bookmark.review ? 'Edit' : 'Review'}
+                            </button>
+                        </div>
                     </td>
                     <td>
-                        <button type="submit" class="btn btn-danger" onclick="{removeBookmark(${book.pk})}">Remove</button>
+                        <button class="btn btn-danger" onclick="removeBookmark(${bookmark.pk})">Remove</button>
                     </td>
                 </tr>
             `;
@@ -171,6 +163,21 @@
             method: "DELETE",
             body: JSON.stringify({ id: id })
         }).then(refreshBookmarks)
+    }
+
+    function addReview() {
+        fetch(`/mybooks/add_review_ajax/${pkReview}/`, {
+            method: "POST",
+            body: new FormData(document.querySelector('#formReview'))
+        }).then(refreshBookmarks)
+
+        document.getElementById("formReview").reset()
+        return false
+    }
+    document.getElementById("button_add").onclick = addReview
+
+    function updatePkReview(newPk) {
+        pkReview = newPk; 
     }
 </script>
 
