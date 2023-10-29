@@ -2,6 +2,13 @@
 {% block content %}
 
 <style>
+    #app-title {
+        font-family: 'Kidstock';
+        font-weight: bold;
+        color: #011627ff;
+        font-size: 8vh;
+        margin-bottom: 4vh;
+    }
     .float-main{
         padding-top: 10px;
     }
@@ -34,7 +41,6 @@
     }
     .card{
         background-color: beige;
-        max-width: 300px;
         height: auto;
         box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
         border-radius: 10px;
@@ -70,16 +76,15 @@
 </style>
 
 <div class="content">
-    
+    <h1 id="app-title">Forum Discussion</h1>
     <div id="header">
-        <h3>Discussion Forum</h3>
-        <h1>Engage with other people</h1>
+        <h3>Feel free to engage with other people</h3>
+        <p>click the button below to create a new discussion!</p>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
     </div>
     
     <div class="content">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submissionModal" style="color: black;">Add New Discussion</button>
         <div id="discussion-submission"></div>
- 
     </div>
     
     <div>
@@ -124,12 +129,13 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                
+                        <div id="story-title" style="padding-top: 0px;">
+                            <p class="card-text" style="font-weight: bold; padding-top: 0px;">by ${submit.fields.user}</p>
+                            <p class="card-text">${submit.fields.date}</p>
+                            <hr>
+                        </div>
                         <div>
                             <p class="card-text">${submit.fields.description}</p>
-                        </div>
-                        <div class="discussion-create-date">
-                            <p class="card-text">${submit.fields.date}</p>
                         </div>
                     </div>
                 </div>
