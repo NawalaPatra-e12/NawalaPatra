@@ -32,33 +32,42 @@
 
 
 <div class="content"> 
-    <h1 id="app-title">Library</h1>
-
+    <h1 id="app-title" style="text-align: center;">Leaderboard</h1>
+    <h3 style="text-align: center; font-size: small;"> Overall only shows the Top 10</h3>
+    <h5 style="text-align: center; font-size: smaller;"> You can rate your favourite books in each genre</h5>
     <div id="filters">
 
-        <p style="font-weight: bold;">Filters</p>
+        <p style="font-weight: bold;">By Genre</p>
 
-        <a class="filter-links" href="/library/">
-            All
+        <a class="filter-links" href="/leaderboard/">
+            Overall
         </a>
+        &nbsp;
+        &nbsp;
+        &nbsp;
     
         {% for category in categories %}
         <a class="filter-links" href="/leaderboard/filter/{{ category.0 }}/">
-            {{ category.1 }}
+            {{ category.1 }}   
         </a>
+        &nbsp;
+        &nbsp;  
+        &nbsp;  
         {% endfor %}
     </div>
-    <table id="item_table">
-    <tr style="text-align: center;">
-        <th>No.</th>
-        <th>Cover</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Category</th>
-        <th>Rate</th>
-    </tr>
 
-    {% for product in products %}
+    <div>
+        <table id="item_table">
+            <tr style="text-align: center;">
+                <th>No.</th>
+                <th>Cover</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Rate</th>
+            </tr>
+    
+            {% for product in products %}
             <tr>
                 <td>{{forloop.counter}}</td>
                 <td>
@@ -69,19 +78,61 @@
                 <td>{{product.title}}</td>
                 <td>{{product.author}}</td>
                 <td>{{product.category}}</td>
-                <td>{{product.rate}}
-                    <form method="POST" action="{% url 'leaderboard:rate_button' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="book_id" value="{{product.id}}">
-                        <button type="submit">♡</button>
-                    </form>
+                <td id="rate{{product.id}}">{{product.rate}}
+                    <button type="button" onclick="rateBook({{product.id}})">♡</button>
                 </td>
             </tr>
-        {% endfor %}
-    </table>
+            {% endfor %}
+        </table>
+    
+        <script type="text/javascript">
+            function rateBook(bookId) {
+                $.ajax({
+                    url: '/rate_button/',
+                    type: 'POST',
+                    data: {
+                        'book_id': bookId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(data) {
+                        if (data.success) {
+                            $.ajax({
+                                url: document.URL,
+                                type: 'GET',
+                                success: function(response) {
+                                    $('#item_table').html($(response).find('#item_table').html());
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        </script>
+    </div>
+    
+    
 </div>
-<h1>test</h1>
+
 </html>
+
+<script>
+function rateBook(bookId) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("rate" + bookId).innerHTML =
+      parseInt(document.getElementById("rate" + bookId).innerHTML) + 1;
+      location.reload(true);
+    }
+  };
+  xhttp.open("POST", "{% url 'leaderboard:rate_button' %}", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("book_id=" + bookId + "&csrfmiddlewaretoken={{ csrf_token }}");
+}
+
+
+</script>
+
 
 
 {% endblock content %}
