@@ -9,6 +9,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from mybooks.models import Bookmark
+from main.models import UserProfile
 
 
 # Create your views here.
@@ -17,7 +18,7 @@ def show_main(request):
         user_profile = request.user
         bookmarked = Bookmark.objects.filter(user=user_profile)
         bookmarked_books = []
-        counter = 0;
+        counter = 0
         for bookmark in bookmarked:
             book = {
                     "title": bookmark.book.title,  
