@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Library{% endblock title %}
+
 {% block meta %}
 <link rel="stylesheet" href="{% static 'css/fonts.css' %}" />
 <link rel="stylesheet" href="{% static 'css/library.css' %}" />
@@ -14,6 +16,8 @@
     <h1 id="app-title">Library</h1>
 
     <p class="invisible">{{ current_user_id }}</p>
+    <h4 class="darkblue-text"> {{ search_string }} </h4>
+    <br/>
 
     <div class="grid-container">
 
@@ -83,6 +87,7 @@
                 </tbody>
                 
             </table>
+            <p> {{ whoops }} </p>
         </div>
         
         <div class="grid-child">

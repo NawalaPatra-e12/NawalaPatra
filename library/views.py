@@ -25,6 +25,7 @@ def show_library(request):
         'products': data,
         'categories': CATEGORIES_NUM,
         'current_user_id': request.user.id,
+        'search_string': "",
     }
 
     return render(request, "library.html", context)
@@ -52,11 +53,21 @@ def search_products(request):
             search_filter &= Q(title__icontains=word) | Q(author__icontains=word) | Q(category__icontains=word)
 
         data = Book.objects.filter(search_filter)
+        whoops = ""
+
+        if (len(data) == 0):
+            whoops = "Whoops, looks like there's nothing here!"
+
+
+        search_string = f"Showing results for: {searched}"
 
         context={
-            'searched': searched,
             'products': data,
             'categories': CATEGORIES_NUM,
+            'current_user_id': request.user.id,
+            'search_string': search_string,
+            'searched': searched,
+            'whoops': whoops,
         }
 
         return render(request, "library.html", context)
@@ -72,6 +83,8 @@ def filter_category(request, id):
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
+        'current_user_id': request.user.id,
+        'search_string': "",
     }
 
     return render(request, "library.html", context)
