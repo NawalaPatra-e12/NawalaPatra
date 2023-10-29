@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block meta %}
-    <!-- <style>
+<!-- <style>
         .image-container {
             width: 100px;  /* Set your desired width */
             height: 150px; /* Set your desired height */
@@ -18,23 +18,24 @@
 
 {% block content %}
 
-<div class="content">
-    <!-- <a href="/library/filter/1/">
-        <button>Literature & Fiction</button>
-    </a>
-     -->
-    <table>
-        <tr>
-            <th>No.</th>
-            <th>Cover</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-        </tr>
-    
-        {% for product in bookmarked_books %}
+<div class="grid-child">
+
+    <table class="table">
+        <thead>
             <tr>
-                <td>{{forloop.counter}}</td>
+                <th scope="col">#</th>
+                <th scope="col">Cover</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Category</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+
+            {% for product in bookmarked_books %}
+            <tr>
+                <th scope="row">{{forloop.counter}}</th>
                 <td>
                     <div class="image-container">
                         <img src="{{product.image_url}}"/>
@@ -44,8 +45,38 @@
                 <td>{{product.author}}</td>
                 <td>{{product.category}}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+
+        </tbody>
+        
     </table>
 </div>
+
+<script>
+    async function getBookmark() {
+        return fetch("{% url 'mybooks:get_bookmark_json' %}").then((res) => res.json())
+    }
+
+    async function refreshBookmark() {
+        const products = await getBookmark();
+        let htmlString = ``
+        products.bookmarked_books.forEach((book, index) => {
+            // htmlString += `<tr>
+            //     <th scope="row">${index + 1}</th>
+            //     <td>
+            //         <div class="image-container">
+            //             <img src="${book.image_url}" />
+            //         </div>
+            //     </td>
+            //     <td>${book.title}</td>
+            //     <td>${book.author}</td>
+            //     <td>${book.category}</td>
+            // </tr>`;
+        });
+        document.querySelector("table tbody").innerHTML = htmlString;
+    }
+
+    refereshBookmark();
+</script>
 
 {% endblock content %}
