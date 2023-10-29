@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from library.models import Book
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponse
@@ -8,16 +8,20 @@ from writersjam.models import Submission, Prompt
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
 import datetime
-from forum.forms import DiscussionForm
-from forum.models import Discussion
+from forum.forms import DiscussionForm, ReplyForm
+from forum.models import Discussion, Reply
 
 # Show main library page.
 @login_required(login_url='/login/')
 def show_discussion(request):
     description = Discussion.objects.all()
+    reply_form = ReplyForm()  # Create an instance of your reply form.
+
     
     context = {
         'discussion': description,
+        'reply_form': reply_form
+
     }
     return render(request, "forum.html", context)
 
@@ -58,3 +62,29 @@ def submit_discussion_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+def add_reply(request, discussion_id):
+    if request.method == 'POST':
+        reply_form = ReplyForm(request.POST)
+        if reply_form.is_valid():
+            discussion = get_object_or_404(Discussion, id=discussion_id)
+            new_reply = reply_form.save(commit=False)
+            new_reply.discussion = discussion
+            new_reply.user = request.user
+            new_reply.save()
+            return HttpResponseRedirect(reverse('discussion_detail', args=[discussion_id]))
+    else:
+        reply_form = ReplyForm()
+
+    return render(request, 'forum.html', {'reply_form': reply_form})
+
+def discussion_detail(request, discussion_id):
+    discussion = get_object_or_404(Discussion, id=discussion_id)
+    reply_form = ReplyForm()
+
+    return render(request, 'forum.html', {'discussion': discussion, 'reply_form': reply_form})
+
+def view_replies(request, discussion_id):
+    discussion = get_object_or_404(Discussion, id=discussion_id)
+    replies = Reply.objects.filter(discussion=discussion)
+    return render(request, 'forum.html', {'discussion': discussion, 'replies': replies})
