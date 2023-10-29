@@ -6,6 +6,7 @@ from django.core import serializers
 from main.models import User, UserProfile
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from mybooks.models import Bookmark
 
 
 CATEGORIES_NUM = [
@@ -92,12 +93,10 @@ def filter_category(request, id):
 @login_required(login_url='/login/')
 def bookmark_book(request):
     if request.method == 'POST':
+        user_profile = request.user
         book_id = request.POST.get('book_id')
         book = get_object_or_404(Book, pk=book_id)
-        user_profile = request.user.userprofile
-
-        if book not in user_profile.bookmarked_books.all():
-            user_profile.bookmarked_books.add(book)
+        bookmark = Bookmark.objects.get_or_create(user=user_profile, book=book)
     return redirect('library:show_library')  # Redirect back to the library page or another appropriate URL
 
 # OTHER STUFF

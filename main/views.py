@@ -13,6 +13,15 @@ from .models import UserProfile
 
 # Create your views here.
 def show_main(request):
+    user_profile = request.user.userprofile
+    bookmarked_books = user_profile.bookmarked_books.all()[:5]
+
+    context = {
+        'bookmarked' : bookmarked_books,
+    }
+    return render(request, "main.html", context)
+
+def show_main(request):
     return render(request, "main.html")
 
 # def show_library(request):

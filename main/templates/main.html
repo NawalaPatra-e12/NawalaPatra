@@ -12,7 +12,7 @@
 <div class="content">
     <center>
         <h1 id="app-title">Welcome to NawalaPatra!</h1>
-        <p>Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
+        <p style="font-weight: bold;">Here is a wonderland for Books lover where you can do multiple fun activities across the website</p>
     </center>
 
     <div id="card_container">
@@ -68,16 +68,24 @@
     </div> 
 
     {% if user.is_authenticated %}
-    <div id="mybooks-section" style="height: 150px;">
-        <div class="card_item" style="height: 125px;">
+    <div id="mybooks-section" style="height: 430px;">
+        <div class="mybooks_item" style="border: 3px black;">
             <a href="/mybooks/" class="book_link">
                 <div class="item_title">
-                    My Books
+                    {{ user.username }} Books Collection
                     <br>
                     <hr style="border-color: white;">
                     <p class="item_text">See the books that you have bookmarked before in here!</p>
+                    
+                    <div id="bookmark_list">
+                        {% for book in bookmarked %}
+                        <div class="image-container">
+                            <img src="{{book.image_url}}"/>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                </a>
+            </a>
         </div>
     </div>
     {% endif %}
