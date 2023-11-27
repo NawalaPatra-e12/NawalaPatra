@@ -9,11 +9,11 @@
 {% endblock meta %}
 {% block content %}
     <style>
-        
+
     </style>
 
 
-<div class="content"> 
+<div class="content">
     <h1 id="app-title"">Leaderboard</h1>
     <h3 style="font-size: small;"> Overall only shows the Top 10</h3>
     {% if user.is_authenticated %}
@@ -29,17 +29,17 @@
         <div class="grid-child">
             <div class="filters">
                 <p style="font-weight: bold;">By Genre</p>
-        
+
                 <a class="filter-links" href="/leaderboard/">
                     All
                 </a>
                 <br/>
                 <br/>
 
-            
+
                 {% for category in categories %}
         <a class="filter-links" href="/leaderboard/filter/{{ category.0 }}/">
-            {{ category.1 }}   
+            {{ category.1 }}
         </a>
                 </a>
                 <br/>
@@ -58,7 +58,7 @@
                 <th>Category</th>
                 <th>Rate</th>
             </tr>
-    
+
             {% for product in products %}
             <tr>
                 <td>{{forloop.counter}}</td>
@@ -102,7 +102,7 @@
             </tr>
             {% endfor %}
         </table>
-    
+
         <script type="text/javascript">
             function rateBook(bookId) {
                 $.ajax({
@@ -127,7 +127,7 @@
             }
         </script>
     </div>
-    
+
     <div class="grid-child">
         <div class="comment-section">
             <p style="font-weight: bold;">What do you think about the leaderboard?</p>
@@ -213,7 +213,7 @@ async function getUsername(user_id) {
         let counter = 0;
 
         let htmlString = ``
-        
+
         for (const item of products.reverse()) {
             const user_id = item.fields.user;
             const user = await getUsername(user_id);
@@ -223,7 +223,7 @@ async function getUsername(user_id) {
                     <div class="card-body">
                         <p class="card-text u-name">@${user.username}</p>
                         <h6 class="card-subtitle mb-2 text-muted">${item.fields.coment}</h6>
-                        
+
                     </div>
                 </div>
             </div>\n`;
@@ -231,7 +231,7 @@ async function getUsername(user_id) {
             counter++;
             if (counter >= 5) break;
         }
-        
+
         document.getElementById("all_comments").innerHTML = htmlString
     }
 

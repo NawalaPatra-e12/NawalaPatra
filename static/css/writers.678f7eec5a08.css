@@ -1,0 +1,103 @@
+#app-title {
+    font-family: 'Kidstock';
+    font-weight: bold;
+    color: #011627ff;
+    font-size: 8vh;
+    margin-bottom: 4vh;
+}
+
+.float-main{
+    padding-top: 10px;
+}
+#prompt {
+    background-color: #011627ff;
+    color: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+}
+#submission{
+    width: 69%;
+    float: left;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #ff9f1cff;
+}
+#reference{
+    width: 30%;
+    float: right;
+    padding: 5px;
+    border-radius: 5px;
+    background-color: #2ec4b6ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#reference .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.card{
+    background-color: beige;
+    width: auto;
+    height: auto;
+    box-shadow: 3px 10px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    margin: 10px;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* .bbtn {
+    background-color: white;
+    border-radius: 20px;
+} */
+
+.image-container {
+    width: 100px;  /* Set your desired width */
+    height: 150px; /* Set your desired height */
+    overflow: hidden;
+    display: flex;
+    border-radius: 10px;
+}
+.image-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+#submit_button{
+    background-color: white;
+    border-radius: 30px;
+}
+.col-md-4{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#buttonAddStory{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#story-title{
+    text-align: center;
+}
+#story-body{
+    padding-top: 10px;
+}
+#story-create-date{
+    font-size: 2px;
+}
+hr {
+    border: 1px solid black;
+}
+#genre{
+    border: 2px black;
+    background-color: white;
+    border-radius: 20px;
+}
+#book_card{
+    width: 23vw;
+}
