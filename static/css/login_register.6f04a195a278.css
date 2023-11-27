@@ -1,0 +1,66 @@
+.study-bg {
+    background-image: url("/static/img/education7.55d2dca39aa6.jpg");
+    background-size: cover;
+    background-position: right;
+    width: 100vw;
+    height: 100vh;
+}
+
+.book-bg {
+    background-image: url("/static/img/book04.95e894c2636a.png");
+    background-size: cover;
+    background-position: right;
+    width: 100vw;
+    height: 100vh;
+}
+
+.floating-sqr {
+    background-color: #011627ff;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 12px;
+    padding: 5%;
+
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+    float: left;
+    margin-left: 8vw;
+    margin-right: auto;
+    box-shadow: 0 20px 16px 4px rgba(0, 0, 0, 0.314);
+}
+
+.btn-primary {
+    background-color: #2ec4b6ff !important;
+    border-color: #2ec4b6ff !important;
+}
+
+.btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #249b90 !important;
+    border-color: #249b90 !important;
+}
+
+.btn-secondary {
+    background-color: #ff9f1cff !important;
+    border-color: #ff9f1cff !important;
+    color: #011627ff !important;
+}
+
+.btn-secondary:hover, .btn-secondary:active, .btn-secondary:visited {
+    background-color: #e88600 !important;
+    border-color: #e88600 !important;
+    color: #011627ff !important;
+}
+
+body {
+    color: white;
+}
+
+.reg-links {
+    color: #ff9f1cff;
+}
+
+.reg-links:hover {
+    color: #e88600;
+}
