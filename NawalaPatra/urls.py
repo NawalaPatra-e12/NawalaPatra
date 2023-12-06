@@ -25,4 +25,5 @@ urlpatterns = [
     path('leaderboard/', include('leaderboard.urls')),
     path('writersjam/', include('writersjam.urls')),
     path('admin/', admin.site.urls),
+    path('auth/', include('authentication.urls')),
 ]

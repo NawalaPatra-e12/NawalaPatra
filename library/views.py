@@ -108,6 +108,11 @@ def show_json(request):
     data = Book.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
+def filter_id_json(request, id):
+    categories = dict(CATEGORIES_NUM)
+    data = Book.objects.filter(category=categories.get(id))
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
 def show_xml_by_id(request, id):
     data = Book.objects.filter(pk=id)
     return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
