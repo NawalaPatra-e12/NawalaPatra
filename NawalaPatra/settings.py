@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-mj#^bw69k1ceavg^p-)-jtbsr04*_#7&ilx9_%ucj4b+9!7f=1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["NawalaPatra.pythonanywhere.com"]
+ALLOWED_HOSTS = ["NawalaPatra.pythonanywhere.com", "*"]
 
 
 # Application definition
@@ -45,9 +45,12 @@ INSTALLED_APPS = [
     'mybooks',
     'writersjam',
     'myapp',
+    'authentication',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -138,6 +141,18 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # STATIC_URL = 'static/'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://NawalaPatra.pythonanywhere.com',  # Add your trusted origins here
+    'http://127.0.0.1:8000',  # Example: local development
+]
+
+# Cors settings
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:8000',  # Your frontend URL
+    'https://NawalaPatra.pythonanywhere.com',
+    # Add other allowed origins as needed
+]
+
 STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'static'
@@ -146,3 +161,10 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'
+SESSION_COOKIE_SAMESITE = 'None'

@@ -4,6 +4,7 @@ from library.views import search_products, filter_category
 from library.views import show_json, show_json_by_id, show_xml, show_xml_by_id
 from library.views import get_request_json, add_request_ajax
 from library.views import bookreq_delete
+from library.views import filter_category_json
 
 app_name = 'library'
 
@@ -20,4 +21,5 @@ urlpatterns = [
     path('create-request-ajax/', add_request_ajax, name='add_request_ajax'),
     path ('requests/', show_requests, name='show_requests'),
     path('delete-request/<int:id>/', bookreq_delete, name='bookreq_delete'),
+    path('filter-json/<int:id>/', filter_category_json, name='filter_category_json'),
 ]

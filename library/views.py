@@ -21,7 +21,7 @@ CATEGORIES_NUM = [
 # Show main library page.
 def show_library(request):
     data = Book.objects.all()
-    
+
     context = {
         'products': data,
         'categories': CATEGORIES_NUM,
@@ -34,7 +34,7 @@ def show_library(request):
 @login_required(login_url='/login/')
 def show_requests(request):
     data = Request.objects.all()
-    
+
     context = {
         'products': data,
         'current_user_id': request.user.id,
@@ -72,7 +72,7 @@ def search_products(request):
         }
 
         return render(request, "library.html", context)
-    
+
     else:
         return render(request, "library.html", {})
 
@@ -106,6 +106,11 @@ def show_xml(request):
 
 def show_json(request):
     data = Book.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+def filter_category_json(request, id):
+    categories = dict(CATEGORIES_NUM)
+    data = Book.objects.filter(category=categories.get(id))
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
 def show_xml_by_id(request, id):
