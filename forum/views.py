@@ -10,6 +10,13 @@ from django.contrib.auth.decorators import login_required
 import datetime
 from forum.forms import DiscussionForm, ReplyForm
 from forum.models import Discussion, Reply
+from django.shortcuts import redirect
+from django.http import JsonResponse
+
+
+
+
+
 
 # Show main library page.
 @login_required(login_url='/login/')
@@ -63,6 +70,7 @@ def submit_discussion_ajax(request):
 
     return HttpResponseNotFound()
 
+@csrf_exempt
 def add_reply(request, discussion_id):
     if request.method == 'POST':
         reply_form = ReplyForm(request.POST)
@@ -72,7 +80,7 @@ def add_reply(request, discussion_id):
             new_reply.discussion = discussion
             new_reply.user = request.user
             new_reply.save()
-            return HttpResponseRedirect(reverse('discussion_detail', args=[discussion_id]))
+            return redirect('discussion_detail', discussion_id=discussion_id)
     else:
         reply_form = ReplyForm()
 
@@ -81,10 +89,29 @@ def add_reply(request, discussion_id):
 def discussion_detail(request, discussion_id):
     discussion = get_object_or_404(Discussion, id=discussion_id)
     reply_form = ReplyForm()
+    replies = Reply.objects.filter(discussion=discussion)
 
-    return render(request, 'forum.html', {'discussion': discussion, 'reply_form': reply_form})
+    return render(request, 'forum.html', {'discussion': discussion, 'reply_form': reply_form, 'replies': replies})
 
 def view_replies(request, discussion_id):
     discussion = get_object_or_404(Discussion, id=discussion_id)
     replies = Reply.objects.filter(discussion=discussion)
     return render(request, 'forum.html', {'discussion': discussion, 'replies': replies})
+
+def get_replies(request, discussion_id):
+    discussion = get_object_or_404(Discussion, id=discussion_id)
+    replies = Reply.objects.filter(discussion=discussion)
+
+    # Manually convert model instances to a list of dictionaries
+    replies_data = [
+        {
+            'id': reply.id,
+            'text': reply.text,
+            'user': reply.user.username,
+            'created_at': reply.created_at,
+            # Add other fields as needed
+        }
+        for reply in replies
+    ]
+
+    return JsonResponse(replies_data, safe=False)

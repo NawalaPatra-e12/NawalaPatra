@@ -115,31 +115,6 @@
         </div>
         
         
-        <div class="modal" id="replyModal" tabindex="-1" aria-labelledby="replyLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="replyLabel">Add a Reply!</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="text-align: left;">
-                        <form id="replyForm" onsubmit="return false">
-                            {% csrf_token %}
-                            <input type="hidden" id="discussionId" value="{{ discussion.id }}">
-                            <div class="mb-3">
-                                <label for="replyText" class="col-form-label">Reply:</label>
-                                <textarea class="form-control" id="replyText" name="text"></textarea>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="color: black;">Close</button>
-                                <button id="submit_reply" type="submit" class="btn btn-primary" style="color: black;">Submit Reply</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
 
 </div>
@@ -192,23 +167,10 @@
                         <div>
                             <p class="card-text">${submit.fields.description}</p>
                         </div>
-                        <button id="add_reply" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyModal" data-discussion-id="{{ submit.pk }}" style="color: black; float: right;">Reply</button>
                     </div>
                 </div>
 
-                <div class="card" style="margin-left: 40px; margin-bottom: 30px; padding: 10px 0 0 20px;">
-                    <div class="replies">
-                        <h6>Replies:</h6>
-                        <ul>
-                            {% for reply in discussion.replies.all %}
-                                <li>
-                                    <p>${reply.text}</p>
-                                    <p>Replied by ${ reply.user.username } on ${submit.fields.date}</p>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
+                
             </div>\n`;
         }
 
@@ -218,7 +180,8 @@
         const replyButtons = document.querySelectorAll("#add_reply");
         replyButtons.forEach(button => {
             button.addEventListener("click", function () {
-                const discussionId = this.getAttribute("data-discussion-id");
+                const discussionId = this.dataset.discussionId;
+                console.log("Discussion ID:", discussionId); // Add this line for logging
                 document.getElementById("discussionId").value = discussionId;
             });
         });
@@ -254,7 +217,7 @@
     // Check if the discussionId is valid
     if (discussionId) {
         // Construct the URL with the discussionId
-        const replyUrl = `/add_reply/${discussionId}/`;
+        const replyUrl = `/discussion/${discussionId}/add-reply/`;
 
         // Send the reply using fetch
         fetch(replyUrl, {
@@ -265,16 +228,15 @@
             },
         })
         .then((response) => {
-            if (response.ok) {
-                // If the reply is added successfully, close the reply modal and refresh the discussion
-                document.getElementById("replyModal").classList.remove("show");
-                document.getElementById("replyModal").setAttribute("aria-hidden", "true");
-                refreshPage();
-            }
-        })
-        .catch((error) => {
-            console.error("Error adding reply:", error);
-        });
+        if (response.ok) {
+            // If the reply is added successfully, close the reply modal and refresh the discussion
+            $('#replyModal').modal('hide');  // Close the modal
+            refreshPage();  // Refresh the discussion
+        }
+    })
+    .catch((error) => {
+        console.error("Error adding reply:", error);
+    });
     } else {
         console.error("Invalid discussionId");
     }
